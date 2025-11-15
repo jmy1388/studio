@@ -25,14 +25,14 @@ export default function Header() {
               <Button asChild variant="ghost" className="hidden sm:inline-flex">
                 <Link href="/submit">
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Write
+                  글쓰기
                 </Link>
               </Button>
               <UserNav />
             </>
           ) : (
             <Button asChild>
-              <Link href="/login">Login / Sign Up</Link>
+              <Link href="/login">로그인 / 회원가입</Link>
             </Button>
           )}
         </div>

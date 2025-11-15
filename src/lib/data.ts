@@ -24,27 +24,27 @@ export interface Article {
 const users: User[] = [
   {
     id: 'user-1',
-    name: 'Elena Vance',
+    name: '엘레나 반스',
     email: 'elena@example.com',
     password: 'password123',
     avatarId: 'user-1',
-    bio: 'Elena is a philosopher and author, exploring the intersections of technology, mindfulness, and modern society. Her work aims to find balance in a fast-paced world.'
+    bio: '엘레나는 기술, 마음챙김, 현대 사회의 교차점을 탐구하는 철학자이자 작가입니다. 그녀의 작업은 빠르게 변화하는 세상에서 균형을 찾는 것을 목표로 합니다.'
   },
   {
     id: 'user-2',
-    name: 'Samuel Reed',
+    name: '사무엘 리드',
     email: 'samuel@example.com',
     password: 'password123',
     avatarId: 'user-2',
-    bio: 'Samuel is an urban planner and environmental scientist dedicated to creating sustainable cities. He writes about green technology, architecture, and policy.'
+    bio: '사무엘은 지속 가능한 도시를 만드는 데 전념하는 도시 계획가이자 환경 과학자입니다. 그는 녹색 기술, 건축 및 정책에 대해 글을 씁니다.'
   },
   {
     id: 'user-3',
-    name: 'Anya Petrova',
+    name: '아냐 페트로바',
     email: 'anya@example.com',
     password: 'password123',
     avatarId: 'user-3',
-    bio: 'Anya is a marine biologist and storyteller. She combines scientific research with compelling narratives to bring the hidden world of our oceans to light.'
+    bio: '아냐는 해양 생물학자이자 이야기꾼입니다. 그녀는 과학적 연구와 설득력 있는 서사를 결합하여 우리 바다의 숨겨진 세계를 조명합니다.'
   },
 ];
 
@@ -52,116 +52,116 @@ let articles: Article[] = [
   {
     id: 'article-1',
     slug: 'the-art-of-mindful-living',
-    title: 'The Art of Mindful Living',
-    summary: 'In an age of constant distraction, mindfulness is not just a practice but an art form. This article explores practical steps to cultivate presence and peace in daily life.',
-    content: `In an age of constant distraction, mindfulness is not just a practice but an art form. This article explores practical steps to cultivate presence and peace in daily life.
+    title: '마음챙김 생활의 기술',
+    summary: '끊임없는 주의 산만의 시대에 마음챙김은 단순한 수행이 아니라 예술 형식입니다. 이 글은 일상 생활에서 현재와 평화를 기르기 위한 실제적인 단계를 탐구합니다.',
+    content: `끊임없는 주의 산만의 시대에 마음챙김은 단순한 수행이 아니라 예술 형식입니다. 이 글은 일상 생활에서 현재와 평화를 기르기 위한 실제적인 단계를 탐구합니다.
 
-The constant barrage of notifications, the pressure to be always-on, and the endless scroll of social media have left many of us feeling fragmented and disconnected. Mindfulness offers a powerful antidote. It’s the basic human ability to be fully present, aware of where we are and what we’re doing, and not overly reactive or overwhelmed by what’s going on around us.
+끊임없는 알림의 공세, 항상 접속해야 한다는 압박, 그리고 소셜 미디어의 끝없는 스크롤은 우리 중 많은 사람들을 파편화되고 단절된 느낌으로 만들었습니다. 마음챙김은 강력한 해독제를 제공합니다. 그것은 우리가 있는 곳과 우리가 하는 일을 완전히 인식하고, 우리 주변에서 일어나는 일에 지나치게 반응하거나 압도당하지 않는 기본적인 인간 능력입니다.
 
-Getting started with mindfulness doesn’t require hours of meditation. It can begin with something as simple as focusing on your breath for one minute. Notice the sensation of the air entering and leaving your body. When your mind wanders, as it inevitably will, gently guide it back to your breath. This is the fundamental exercise of mindfulness.
+마음챙김을 시작하는 데 몇 시간의 명상이 필요한 것은 아닙니다. 1분 동안 호흡에 집중하는 것만으로도 시작할 수 있습니다. 공기가 몸에 들어오고 나가는 감각을 느껴보세요. 마음이 불가피하게 방황할 때, 부드럽게 다시 호흡으로 되돌리세요. 이것이 마음챙김의 기본 운동입니다.
 
-Another powerful practice is the "body scan." This involves paying attention to different parts of your body in sequence, from your toes to your head. The goal isn’t to change any sensations you discover, but simply to notice them without judgment. It’s a way of reconnecting with your physical self and grounding yourself in the present moment.
+또 다른 강력한 수행은 "바디 스캔"입니다. 이것은 발가락에서 머리까지 신체의 다른 부분에 순차적으로 주의를 기울이는 것을 포함합니다. 목표는 발견한 감각을 바꾸는 것이 아니라 판단 없이 단순히 알아차리는 것입니다. 이것은 당신의 신체적 자아와 다시 연결하고 현재 순간에 자신을 고정시키는 방법입니다.
 
-Mindful living can extend to all activities. When you eat, savor each bite, noticing the flavors, textures, and smells. When you walk, feel the ground beneath your feet and observe the world around you. By bringing this quality of attention to everyday experiences, you transform mundane routines into opportunities for presence and appreciation. The art of mindful living is about painting your life with the vibrant colors of the present moment.`,
+마음챙김 생활은 모든 활동으로 확장될 수 있습니다. 식사할 때, 맛, 질감, 냄새를 알아차리며 각 한 입을 음미하세요. 걸을 때, 발 아래의 땅을 느끼고 주변 세상을 관찰하세요. 일상적인 경험에 이러한 주의의 질을 가져옴으로써, 당신은 평범한 일상을 현재와 감사의 기회로 변화시킵니다. 마음챙김 생활의 기술은 당신의 삶을 현재 순간의 생생한 색상으로 칠하는 것에 관한 것입니다.`,
     imageId: 'article-1',
     authorId: 'user-1',
     createdAt: '2024-05-10',
-    tags: ['Mindfulness', 'Wellness', 'Philosophy']
+    tags: ['마음챙김', '건강', '철학']
   },
   {
     id: 'article-2',
     slug: 'sustainable-energy-for-cities',
-    title: 'Sustainable Energy Solutions for Urban Development',
-    summary: 'As cities grow, so does their energy demand. We delve into innovative sustainable energy solutions, from solar-paneled skyscrapers to geothermal grids, that are powering the cities of tomorrow.',
-    content: `As urban populations continue to swell, the challenge of powering our cities sustainably becomes ever more critical. Traditional energy sources are not only finite but also major contributors to climate change. The future of urban development hinges on our ability to integrate innovative, renewable energy solutions into the very fabric of our cities.
+    title: '도시 개발을 위한 지속 가능한 에너지 솔루션',
+    summary: '도시가 성장함에 따라 에너지 수요도 증가합니다. 태양광 패널이 설치된 고층 빌딩부터 지열 그리드에 이르기까지 미래의 도시에 전력을 공급하는 혁신적인 지속 가능한 에너지 솔루션에 대해 자세히 알아봅니다.',
+    content: `도시 인구가 계속해서 증가함에 따라, 우리 도시를 지속 가능하게 동력을 공급하는 과제는 더욱 중요해지고 있습니다. 전통적인 에너지원은 유한할 뿐만 아니라 기후 변화의 주요 원인이기도 합니다. 도시 개발의 미래는 혁신적인 재생 가능 에너지 솔루션을 우리 도시의 구조 자체에 통합하는 능력에 달려 있습니다.
 
-One of the most promising technologies is building-integrated photovoltaics (BIPV). This involves replacing traditional building materials with solar panels. Imagine skyscrapers whose glass facades are not just transparent but are also generating electricity from sunlight. This turns buildings from energy consumers into energy producers.
+가장 유망한 기술 중 하나는 건물 통합형 태양광(BIPV)입니다. 이는 전통적인 건축 자재를 태양광 패널로 교체하는 것을 포함합니다. 유리 외관이 투명할 뿐만 아니라 햇빛으로부터 전기를 생산하는 고층 빌딩을 상상해보십시오. 이는 건물을 에너지 소비자에서 에너지 생산자로 변화시킵니다.
 
-Geothermal energy offers another robust solution. By tapping into the Earth's natural heat, urban areas can create district heating and cooling systems. These networks pipe hot or cool water to multiple buildings from a central source, drastically reducing the need for individual, energy-intensive HVAC systems.
+지열 에너지는 또 다른 강력한 해결책을 제공합니다. 지구의 자연적인 열을 활용함으로써, 도시 지역은 지역 난방 및 냉방 시스템을 만들 수 있습니다. 이러한 네트워크는 중앙 소스에서 여러 건물로 온수 또는 냉수를 파이프로 연결하여 개별적이고 에너지 집약적인 HVAC 시스템의 필요성을 크게 줄입니다.
 
-Smart grids are the brains that make these systems work together. Using AI and real-time data, a smart grid can manage energy flow from various sources—solar, wind, geothermal—and distribute it efficiently based on demand. It can direct surplus energy from a solar-powered office building in the afternoon to residential areas in the evening, minimizing waste and ensuring a reliable supply.
+스마트 그리드는 이러한 시스템이 함께 작동하도록 만드는 두뇌입니다. AI와 실시간 데이터를 사용하여 스마트 그리드는 태양열, 풍력, 지열 등 다양한 소스로부터의 에너지 흐름을 관리하고 수요에 따라 효율적으로 분배할 수 있습니다. 오후에는 태양광 발전 사무실 건물의 잉여 에너지를 저녁에는 주거 지역으로 보내 낭비를 최소화하고 안정적인 공급을 보장할 수 있습니다.
 
-The transition to sustainable urban energy is a complex undertaking, requiring collaboration between engineers, architects, policymakers, and citizens. But with these and other emerging technologies, the vision of a clean, resilient, and self-sufficient city is no longer a distant dream but an achievable reality.`,
+지속 가능한 도시 에너지로의 전환은 엔지니어, 건축가, 정책 입안자 및 시민 간의 협력이 필요한 복잡한 사업입니다. 그러나 이러한 기술 및 기타 신흥 기술을 통해 깨끗하고 탄력적이며 자급자족적인 도시의 비전은 더 이상 먼 꿈이 아니라 달성 가능한 현실입니다.`,
     imageId: 'article-2',
     authorId: 'user-2',
     createdAt: '2024-05-15',
-    tags: ['Sustainability', 'Urbanism', 'Technology']
+    tags: ['지속가능성', '도시주의', '기술']
   },
   {
     id: 'article-3',
     slug: 'the-science-of-cooking',
-    title: 'The Science of Cooking',
-    summary: 'Ever wondered why bread rises or why searing meat makes it so flavorful? We break down the delicious chemistry and physics happening in your kitchen every day.',
-    content: `Cooking is often seen as an art, but at its core, it is a science. Every time you step into the kitchen, you become a chemist. Understanding the fundamental scientific principles behind cooking can transform your results from mediocre to magnificent.
+    title: '요리의 과학',
+    summary: '빵이 왜 부풀어 오르는지, 고기를 구우면 왜 그렇게 풍미가 좋은지 궁금해 본 적이 있나요? 매일 부엌에서 일어나는 맛있는 화학과 물리학을 분석합니다.',
+    content: `요리는 종종 예술로 여겨지지만, 그 핵심은 과학입니다. 부엌에 들어설 때마다 당신은 화학자가 됩니다. 요리 뒤에 숨겨진 기본적인 과학 원리를 이해하면 당신의 결과물을 평범함에서 훌륭함으로 바꿀 수 있습니다.
 
-Let's start with the Maillard reaction, the holy grail of flavor. This is a chemical reaction between amino acids and reducing sugars that gives browned food its distinctive taste. When you sear a steak, toast bread, or roast coffee beans, you are witnessing the Maillard reaction at work. The high heat causes hundreds of different flavor compounds to be created, resulting in a complexity that can't be achieved otherwise.
+풍미의 성배인 마이야르 반응부터 시작하겠습니다. 이것은 아미노산과 환원당 사이의 화학 반응으로, 갈색으로 변한 음식에 독특한 맛을 부여합니다. 스테이크를 굽거나, 빵을 굽거나, 커피 원두를 볶을 때, 당신은 마이야르 반응이 작동하는 것을 목격하고 있는 것입니다. 높은 열은 수백 가지의 다른 풍미 화합물을 생성하여 다른 방법으로는 얻을 수 없는 복잡성을 만듭니다.
 
-Then there's gluten development. When you knead bread dough, you are stretching and aligning proteins called glutenin and gliadin. These proteins form a network that traps the carbon dioxide produced by yeast, causing the bread to rise and giving it its characteristic chewy texture. The amount of kneading directly impacts the final structure of your loaf.
+그런 다음 글루텐 개발이 있습니다. 빵 반죽을 반죽할 때, 글루테닌과 글리아딘이라는 단백질을 늘리고 정렬하게 됩니다. 이 단백질들은 효모에 의해 생성된 이산화탄소를 가두는 네트워크를 형성하여 빵이 부풀어 오르고 특유의 쫄깃한 식감을 갖게 합니다. 반죽의 양은 빵의 최종 구조에 직접적인 영향을 미칩니다.
 
-Emulsification is another key concept. This is the process of mixing two liquids that don't normally combine, like oil and water. By adding an emulsifier (like the lecithin in egg yolks) and whisking vigorously, you can create stable mixtures like mayonnaise or vinaigrette. The emulsifier surrounds the oil droplets, allowing them to remain suspended in the water.
+유화는 또 다른 핵심 개념입니다. 이것은 기름과 물처럼 보통 섞이지 않는 두 액체를 섞는 과정입니다. 유화제(달걀 노른자의 레시틴과 같은)를 첨가하고 격렬하게 저어주면 마요네즈나 비네그레트와 같은 안정적인 혼합물을 만들 수 있습니다. 유화제는 기름 방울을 둘러싸서 물에 떠 있도록 합니다.
 
-From the precise temperature control of sous-vide to the microbial magic of fermentation, science is everywhere in the kitchen. By embracing your inner scientist, you can gain greater control over your cooking and unlock a new world of culinary possibilities.`,
+수비드의 정밀한 온도 조절부터 발효의 미생물 마법에 이르기까지 과학은 부엌 어디에나 있습니다. 내면의 과학자를 받아들임으로써 요리에 대한 더 큰 통제력을 얻고 새로운 요리 가능성의 세계를 열 수 있습니다.`,
     imageId: 'article-3',
     authorId: 'user-1',
     createdAt: '2024-05-20',
-    tags: ['Food', 'Science', 'Lifestyle']
+    tags: ['음식', '과학', '라이프스타일']
   },
   {
     id: 'article-4',
     slug: 'wonders-of-the-deep-sea',
-    title: 'Exploring the Wonders of the Deep Sea',
-    summary: 'Journey with us to the abyssal plains, where sunlight never reaches and life thrives in the most extreme conditions. Discover the bizarre and beautiful creatures of the deep.',
-    content: `The deep sea is the largest habitat on Earth, yet it remains one of the least explored. It is a world of crushing pressure, freezing temperatures, and perpetual darkness. But far from being a barren wasteland, it is teeming with life—bizarre, beautiful, and utterly alien.
+    title: '심해의 경이로움 탐험하기',
+    summary: '햇빛이 닿지 않고 가장 극한 조건에서 생명체가 번성하는 심해 평원으로 우리와 함께 여행을 떠나보세요. 심해의 기이하고 아름다운 생물들을 발견하세요.',
+    content: `심해는 지구상에서 가장 큰 서식지이지만, 가장 적게 탐험된 곳 중 하나입니다. 엄청난 압력, 얼어붙을 듯한 온도, 그리고 영원한 어둠의 세계입니다. 그러나 불모의 황무지와는 거리가 먼 이곳은 기이하고, 아름답고, 완전히 외계인 같은 생명체로 가득 차 있습니다.
 
-Hydrothermal vents, often called "black smokers," are oases of life in the deep. These underwater geysers spew superheated, mineral-rich water from beneath the Earth's crust. Instead of photosynthesis, the ecosystem here is based on chemosynthesis. Specialized bacteria convert chemicals like hydrogen sulfide into energy, forming the base of a food chain that includes giant tube worms, ghostly white crabs, and swarms of shrimp.
+"블랙 스모커"라고도 불리는 열수 분출구는 심해의 생명 오아시스입니다. 이 수중 간헐천은 지구 지각 아래에서 과열된 미네랄이 풍부한 물을 뿜어냅니다. 이곳의 생태계는 광합성 대신 화학 합성에 기반을 두고 있습니다. 특수 박테리아는 황화수소와 같은 화학 물질을 에너지로 변환하여 거대한 관 벌레, 유령 같은 흰 게, 새우 떼를 포함하는 먹이 사슬의 기초를 형성합니다.
 
-Bioluminescence is the language of the deep. In the absence of sunlight, many creatures produce their own light for communication, camouflage, predation, and defense. The anglerfish dangles a luminous lure to attract unsuspecting prey. The vampire squid can release a cloud of glowing mucus to startle predators. It's a silent, spectacular light show happening miles below the surface.
+생물 발광은 심해의 언어입니다. 햇빛이 없는 곳에서 많은 생물들이 의사소통, 위장, 포식 및 방어를 위해 스스로 빛을 냅니다. 아귀는 빛나는 미끼를 매달아 의심하지 않는 먹이를 유인합니다. 뱀파이어 오징어는 포식자를 놀라게 하기 위해 빛나는 점액 구름을 방출할 수 있습니다. 그것은 수면 아래 수 마일에서 일어나는 조용하고 장관인 빛의 쇼입니다.
 
-The sheer pressure of the deep has led to incredible adaptations. The Mariana snailfish, living at depths of nearly 8,000 meters, has a flexible skull and a gelatinous body to withstand pressures that would crush a submarine.
+심해의 엄청난 압력은 놀라운 적응을 이끌어 냈습니다. 거의 8,000미터 깊이에 사는 마리아나 스네일피쉬는 잠수정을 으스러뜨릴 압력을 견디기 위해 유연한 두개골과 젤라틴 같은 몸을 가지고 있습니다.
 
-Exploring the deep sea is a journey to another world, one that constantly challenges our understanding of life itself. Each new dive with a remotely operated vehicle (ROV) reveals new species and new mysteries, reminding us how much we still have to learn about our own planet.`,
+심해를 탐험하는 것은 생명 자체에 대한 우리의 이해에 끊임없이 도전하는 또 다른 세계로의 여행입니다. 원격 조종 차량(ROV)으로 다이빙할 때마다 새로운 종과 새로운 미스터리가 드러나며, 우리가 우리 행성에 대해 아직 얼마나 많이 배워야 하는지를 상기시켜 줍니다.`,
     imageId: 'article-4',
     authorId: 'user-3',
     createdAt: '2024-05-25',
-    tags: ['Science', 'Nature', 'Exploration']
+    tags: ['과학', '자연', '탐험']
   },
   {
     id: 'article-5',
     slug: 'ai-in-healthcare',
-    title: 'The Future of AI in Healthcare',
-    summary: 'Artificial intelligence is poised to revolutionize healthcare, from diagnosing diseases earlier and more accurately to personalizing treatment plans. We look at the cutting-edge of medical AI.',
-    content: `Artificial intelligence (AI) is no longer a futuristic concept in medicine; it's a present-day reality that is beginning to reshape every aspect of healthcare. Its potential to improve patient outcomes, streamline processes, and accelerate research is immense.
+    title: '헬스케어 분야 AI의 미래',
+    summary: '인공 지능은 질병을 더 빠르고 정확하게 진단하는 것부터 치료 계획을 개인화하는 것까지 의료 분야에 혁신을 가져올 준비가 되어 있습니다. 우리는 의료 AI의 최첨단을 살펴봅니다.',
+    content: `인공 지능(AI)은 더 이상 의학에서 미래적인 개념이 아닙니다. 오늘날 의료의 모든 측면을 재편하기 시작한 현실입니다. 환자 결과를 개선하고, 프로세스를 간소화하며, 연구를 가속화할 수 있는 잠재력은 엄청납니다.
 
-One of the most significant impacts of AI is in medical imaging analysis. AI algorithms, particularly deep learning models, can be trained to detect patterns in X-rays, CT scans, and MRIs that may be invisible to the human eye. Studies have shown that AI can identify certain types of cancer and diabetic retinopathy with accuracy rivaling or even exceeding that of expert radiologists. This can lead to earlier diagnoses and more effective treatments.
+AI의 가장 중요한 영향 중 하나는 의료 영상 분석입니다. AI 알고리즘, 특히 딥 러닝 모델은 사람의 눈에는 보이지 않을 수 있는 엑스레이, CT 스캔 및 MRI의 패턴을 감지하도록 훈련될 수 있습니다. 연구에 따르면 AI는 특정 유형의 암과 당뇨병성 망막병증을 전문가 방사선 전문의와 필적하거나 심지어 능가하는 정확도로 식별할 수 있습니다. 이는 조기 진단과 보다 효과적인 치료로 이어질 수 있습니다.
 
-AI is also driving the push towards personalized medicine. By analyzing a patient's genetic information, lifestyle, and clinical data, AI models can help predict their risk for certain diseases and recommend personalized prevention strategies. For patients who are already sick, AI can help tailor treatment plans, suggesting the most effective drugs and dosages based on their unique biological makeup.
+AI는 또한 맞춤형 의료를 향한 노력을 주도하고 있습니다. 환자의 유전 정보, 생활 방식 및 임상 데이터를 분석함으로써 AI 모델은 특정 질병에 대한 위험을 예측하고 개인화된 예방 전략을 추천하는 데 도움이 될 수 있습니다. 이미 아픈 환자의 경우 AI는 고유한 생물학적 구성에 따라 가장 효과적인 약물과 복용량을 제안하여 치료 계획을 맞춤화하는 데 도움이 될 수 있습니다.
 
-In drug discovery, AI is dramatically accelerating the process of finding new medicines. It can analyze vast databases of molecular compounds to identify potential drug candidates in a fraction of the time it would take with traditional methods. This could lead to faster development of treatments for a wide range of diseases.
+신약 개발에서 AI는 새로운 의약품을 찾는 과정을 극적으로 가속화하고 있습니다. 분자 화합물의 방대한 데이터베이스를 분석하여 기존 방법보다 훨씬 짧은 시간에 잠재적인 약물 후보를 식별할 수 있습니다. 이는 다양한 질병에 대한 치료법 개발을 더 빠르게 할 수 있습니다.
 
-Of course, the integration of AI into healthcare comes with challenges, including data privacy, algorithmic bias, and the need for regulatory oversight. However, as these technologies mature and are implemented responsibly, AI promises a future where healthcare is more predictive, preventive, personalized, and participatory for everyone.`,
+물론 의료에 AI를 통합하는 데는 데이터 개인 정보 보호, 알고리즘 편향, 규제 감독의 필요성 등 과제가 따릅니다. 그러나 이러한 기술이 성숙하고 책임감 있게 구현됨에 따라 AI는 모든 사람에게 의료가 더 예측 가능하고, 예방적이며, 개인화되고, 참여적으로 되는 미래를 약속합니다.`,
     imageId: 'article-5',
     authorId: 'user-2',
     createdAt: '2024-06-01',
-    tags: ['AI', 'Technology', 'Healthcare']
+    tags: ['AI', '기술', '헬스케어']
   },
   {
     id: 'article-6',
     slug: 'post-modern-architecture',
-    title: 'Post-Modern Architecture: A Rebellion in Color',
-    summary: 'Breaking free from the rigid minimalism of modernism, post-modern architecture embraced whimsy, color, and historical reference. Explore the playful and provocative world of post-modernism.',
-    content: `Post-modern architecture emerged in the late 1970s as a direct reaction against the perceived austerity and rigidity of the modernist movement. Where modernism preached "form follows function" and "less is more," post-modernism cheekily replied with "less is a bore." It was a rebellion marked by color, ornament, and a playful collage of historical styles.
+    title: '포스트모던 건축: 색채의 반란',
+    summary: '모더니즘의 엄격한 미니멀리즘에서 벗어나 포스트모던 건축은 기발함, 색채, 역사적 참조를 수용했습니다. 장난기 많고 도발적인 포스트모더니즘의 세계를 탐험해보세요.',
+    content: `포스트모던 건축은 1970년대 후반 모더니즘 운동의 인지된 긴축과 경직성에 대한 직접적인 반작용으로 등장했습니다. 모더니즘이 "형태는 기능을 따른다"와 "적을수록 많다"를 설파한 곳에서 포스트모더니즘은 "적을수록 지루하다"고 뻔뻔하게 대답했습니다. 그것은 색상, 장식, 그리고 역사적 스타일의 장난기 있는 콜라주로 특징지어지는 반란이었습니다.
 
-Key figures like Robert Venturi, Philip Johnson, and Michael Graves championed this new approach. Venturi's Vanna Venturi House is often cited as one of the first post-modern buildings, with its non-functional arch and split-gable roof that defied modernist conventions.
+로버트 벤투리, 필립 존슨, 마이클 그레이브스와 같은 주요 인물들이 이 새로운 접근 방식을 옹호했습니다. 벤투리의 반나 벤투리 하우스는 종종 최초의 포스트모던 건물 중 하나로 꼽히며, 기능이 없는 아치와 모더니스트 관습에 도전한 분할 박공 지붕이 특징입니다.
 
-One of the defining features of post-modernism is its use of irony and wit. Buildings often incorporate classical elements like columns and pediments but in an exaggerated, out-of-context, or brightly colored way. Philip Johnson's AT&T Building in New York, with its "Chippendale" top, is a prime example of this historical quotation.
+포스트모더니즘의 특징 중 하나는 아이러니와 재치를 사용하는 것입니다. 건물은 종종 기둥이나 박공과 같은 고전적인 요소를 통합하지만 과장되거나, 맥락에 맞지 않거나, 밝은 색상으로 표현됩니다. 뉴욕에 있는 필립 존슨의 AT&T 빌딩은 "치펜데일" 상단이 있는 이 역사적 인용의 대표적인 예입니다.
 
-Color was a powerful tool for post-modern architects. They used bold, often clashing, color palettes to break up building facades and create visual interest. This was a stark contrast to the monochrome whites, grays, and blacks favored by modernists.
+색상은 포스트모던 건축가들에게 강력한 도구였습니다. 그들은 건물 외관을 분할하고 시각적 흥미를 유발하기 위해 대담하고 종종 충돌하는 색상 팔레트를 사용했습니다. 이것은 모더니스트들이 선호했던 단색의 흰색, 회색, 검은색과 극명한 대조를 이루었습니다.
 
-While sometimes criticized for being superficial or kitschy, post-modern architecture succeeded in reintroducing humanism, humor, and historical memory into a field that had become overly dogmatic. It reopened the conversation about what a building could be and paved the way for the diverse architectural styles we see today.`,
+때로는 피상적이거나 키치하다는 비판을 받기도 하지만, 포스트모던 건축은 지나치게 독단적이 된 분야에 인본주의, 유머, 역사적 기억을 다시 도입하는 데 성공했습니다. 그것은 건물이 무엇이 될 수 있는지에 대한 대화를 다시 열었고 오늘날 우리가 보는 다양한 건축 스타일의 길을 열었습니다.`,
     imageId: 'article-6',
     authorId: 'user-2',
     createdAt: '2024-06-05',
-    tags: ['Architecture', 'Art', 'History']
+    tags: ['건축', '예술', '역사']
   },
 ];
 

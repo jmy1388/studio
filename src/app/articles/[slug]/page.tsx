@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { getArticleBySlug, getAuthor, getImage } from '@/lib/data';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -39,15 +40,15 @@ export default function ArticlePage() {
     if (!user) {
         toast({
             variant: "destructive",
-            title: "Please log in",
-            description: "You need to be logged in to save articles.",
+            title: "로그인 해주세요",
+            description: "기사를 저장하려면 로그인이 필요합니다.",
         });
         return;
     }
     toggleSaveArticle(article.id);
     toast({
-        title: isArticleSaved(article.id) ? "Article unsaved" : "Article saved!",
-        description: isArticleSaved(article.id) ? "Removed from your reading list." : "Added to your reading list.",
+        title: isArticleSaved(article.id) ? "기사 저장 취소됨" : "기사 저장됨!",
+        description: isArticleSaved(article.id) ? "읽기 목록에서 제거되었습니다." : "읽기 목록에 추가되었습니다.",
     })
   }
 
@@ -76,7 +77,7 @@ export default function ArticlePage() {
                 <div>
                   <p className="font-semibold">{author.name}</p>
                   <p className="text-sm text-muted-foreground">
-                    Published on {format(new Date(article.createdAt), 'MMMM d, yyyy')}
+                    게시일: {format(new Date(article.createdAt), 'yyyy년 M월 d일', { locale: ko })}
                   </p>
                 </div>
               </>
@@ -89,7 +90,7 @@ export default function ArticlePage() {
            ): user && (
             <Button variant={isArticleSaved(article.id) ? "default" : "outline"} onClick={handleSaveClick}>
                 <Bookmark className={`mr-2 h-4 w-4 ${isArticleSaved(article.id) ? "fill-current" : ""}`} />
-                {isArticleSaved(article.id) ? 'Saved' : 'Save'}
+                {isArticleSaved(article.id) ? '저장됨' : '저장'}
             </Button>
            )}
         </div>
@@ -121,7 +122,7 @@ export default function ArticlePage() {
                         <AvatarFallback>{author.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="text-sm text-muted-foreground">Written by</p>
+                        <p className="text-sm text-muted-foreground">작성자</p>
                         <h3 className="text-lg font-semibold">{author.name}</h3>
                         <p className="mt-1 text-muted-foreground">{author.bio}</p>
                     </div>

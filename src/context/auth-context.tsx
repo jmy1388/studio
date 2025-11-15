@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return null;
     }
     // In a real app, you would hash the password
-    const newUser = addUser({ name, email, password, bio: 'A new author on oob.', avatarId: 'user-3' });
+    const newUser = addUser({ name, email, password, bio: 'oob의 새로운 작가입니다.', avatarId: 'user-3' });
     const { password: _, ...userToStore } = newUser;
     localStorage.setItem('oob-user', JSON.stringify(userToStore));
     setUser(userToStore);

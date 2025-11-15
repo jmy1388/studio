@@ -22,14 +22,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Logo from '@/components/logo';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address.' }),
-  password: z.string().min(1, { message: 'Password is required.' }),
+  email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요.' }),
+  password: z.string().min(1, { message: '비밀번호를 입력해주세요.' }),
 });
 
 const signupSchema = z.object({
-    name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-    email: z.string().email({ message: 'Please enter a valid email address.' }),
-    password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+    name: z.string().min(2, { message: '이름은 2자 이상이어야 합니다.' }),
+    email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요.' }),
+    password: z.string().min(8, { message: '비밀번호는 8자 이상이어야 합니다.' }),
 });
 
 export default function LoginPage() {
@@ -51,13 +51,13 @@ export default function LoginPage() {
   function onLoginSubmit(values: z.infer<typeof loginSchema>) {
     const user = login(values.email, values.password);
     if (user) {
-      toast({ title: 'Login successful!', description: `Welcome back, ${user.name}!` });
+      toast({ title: '로그인 성공!', description: `다시 오신 것을 환영합니다, ${user.name}님!` });
       router.push('/profile');
     } else {
       toast({
         variant: 'destructive',
-        title: 'Login failed',
-        description: 'Please check your email and password.',
+        title: '로그인 실패',
+        description: '이메일과 비밀번호를 확인해주세요.',
       });
       loginForm.reset();
     }
@@ -66,13 +66,13 @@ export default function LoginPage() {
   function onSignupSubmit(values: z.infer<typeof signupSchema>) {
     const newUser = signup(values.name, values.email, values.password);
     if (newUser) {
-      toast({ title: 'Account created!', description: `Welcome, ${newUser.name}!` });
+      toast({ title: '계정이 생성되었습니다!', description: `환영합니다, ${newUser.name}님!` });
       router.push('/profile');
     } else {
       toast({
         variant: 'destructive',
-        title: 'Signup failed',
-        description: 'A user with this email may already exist.',
+        title: '회원가입 실패',
+        description: '이 이메일을 사용하는 사용자가 이미 존재할 수 있습니다.',
       });
     }
   }
@@ -82,13 +82,13 @@ export default function LoginPage() {
         <div className="text-center mb-8 flex flex-col items-center">
             <Logo />
             <h2 className="mt-6 text-center text-3xl font-headline tracking-tight text-foreground">
-                Sign in to your account or create a new one
+                계정에 로그인하거나 새 계정을 만드세요
             </h2>
         </div>
         <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="login">로그인</TabsTrigger>
+                <TabsTrigger value="signup">회원가입</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
                 <Form {...loginForm}>
@@ -98,7 +98,7 @@ export default function LoginPage() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Email address</FormLabel>
+                                <FormLabel>이메일 주소</FormLabel>
                                 <FormControl>
                                     <Input placeholder="you@example.com" {...field} />
                                 </FormControl>
@@ -111,7 +111,7 @@ export default function LoginPage() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel>비밀번호</FormLabel>
                                 <FormControl>
                                     <Input type="password" placeholder="••••••••" {...field} />
                                 </FormControl>
@@ -120,7 +120,7 @@ export default function LoginPage() {
                             )}
                         />
                         <Button type="submit" className="w-full" disabled={loginForm.formState.isSubmitting}>
-                            {loginForm.formState.isSubmitting ? 'Signing in...' : 'Sign in'}
+                            {loginForm.formState.isSubmitting ? '로그인 중...' : '로그인'}
                         </Button>
                     </form>
                 </Form>
@@ -133,9 +133,9 @@ export default function LoginPage() {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Full Name</FormLabel>
+                                <FormLabel>이름</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Your Name" {...field} />
+                                    <Input placeholder="이름" {...field} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -146,7 +146,7 @@ export default function LoginPage() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Email address</FormLabel>
+                                <FormLabel>이메일 주소</FormLabel>
                                 <FormControl>
                                     <Input placeholder="you@example.com" {...field} />
                                 </FormControl>
@@ -159,16 +159,16 @@ export default function LoginPage() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel>Password</FormLabel>
+                                <FormLabel>비밀번호</FormLabel>
                                 <FormControl>
-                                    <Input type="password" placeholder="8+ characters" {...field} />
+                                    <Input type="password" placeholder="8자 이상" {...field} />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <Button type="submit" className="w-full" disabled={signupForm.formState.isSubmitting}>
-                            {signupForm.formState.isSubmitting ? 'Creating account...' : 'Create Account'}
+                            {signupForm.formState.isSubmitting ? '계정 생성 중...' : '계정 만들기'}
                         </Button>
                     </form>
                 </Form>

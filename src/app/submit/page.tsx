@@ -23,11 +23,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 const articleSchema = z.object({
-  title: z.string().min(5, { message: 'Title must be at least 5 characters.' }).max(100),
-  summary: z.string().min(20, { message: 'Summary must be at least 20 characters.' }).max(200),
-  content: z.string().min(100, { message: 'Content must be at least 100 characters.' }),
+  title: z.string().min(5, { message: '제목은 5자 이상이어야 합니다.' }).max(100),
+  summary: z.string().min(20, { message: '요약은 20자 이상이어야 합니다.' }).max(200),
+  content: z.string().min(100, { message: '내용은 100자 이상이어야 합니다.' }),
   tags: z.string().refine(value => value.split(',').every(tag => tag.trim().length > 0), {
-    message: 'Please provide comma-separated tags.',
+    message: '쉼표로 구분된 태그를 제공하십시오.',
   }),
 });
 
@@ -43,7 +43,7 @@ function SubmitPageContent() {
 
   function onSubmit(values: z.infer<typeof articleSchema>) {
     if (!user) {
-        toast({ variant: 'destructive', title: 'Error', description: 'You must be logged in to submit an article.' });
+        toast({ variant: 'destructive', title: '오류', description: '기사를 제출하려면 로그인해야 합니다.' });
         return;
     }
     const newArticle = addArticle({
@@ -53,7 +53,7 @@ function SubmitPageContent() {
         tags: values.tags.split(',').map(tag => tag.trim()),
     });
     
-    toast({ title: 'Article submitted!', description: 'Your article has been published.' });
+    toast({ title: '기사 제출됨!', description: '기사가 게시되었습니다.' });
     router.push(`/articles/${newArticle.slug}`);
   }
 
@@ -61,8 +61,8 @@ function SubmitPageContent() {
     <div className="container max-w-4xl mx-auto py-8 md:py-12">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">Submit an Article</CardTitle>
-          <CardDescription>Share your story with the world. Fill out the form below to publish your article.</CardDescription>
+          <CardTitle className="font-headline text-3xl">기사 제출</CardTitle>
+          <CardDescription>세상과 당신의 이야기를 공유하세요. 아래 양식을 작성하여 기사를 게시하세요.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -72,9 +72,9 @@ function SubmitPageContent() {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">Title</FormLabel>
+                    <FormLabel className="text-lg">제목</FormLabel>
                     <FormControl>
-                      <Input placeholder="The Future of Everything" {...field} />
+                      <Input placeholder="모든 것의 미래" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -85,9 +85,9 @@ function SubmitPageContent() {
                 name="summary"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">Summary</FormLabel>
+                    <FormLabel className="text-lg">요약</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="A brief, one-paragraph summary of your article." {...field} />
+                      <Textarea placeholder="기사에 대한 간략한 한 단락 요약." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -98,9 +98,9 @@ function SubmitPageContent() {
                 name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">Content</FormLabel>
+                    <FormLabel className="text-lg">내용</FormLabel>
                     <FormControl>
-                      <Textarea className="min-h-[300px]" placeholder="Write your full article here. You can use line breaks for paragraphs." {...field} />
+                      <Textarea className="min-h-[300px]" placeholder="여기에 전체 기사를 작성하세요. 단락에 줄 바꿈을 사용할 수 있습니다." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,19 +111,19 @@ function SubmitPageContent() {
                 name="tags"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">Tags</FormLabel>
+                    <FormLabel className="text-lg">태그</FormLabel>
                     <FormControl>
-                      <Input placeholder="Technology, Philosophy, Art" {...field} />
+                      <Input placeholder="기술, 철학, 예술" {...field} />
                     </FormControl>
                      <p className="text-sm text-muted-foreground">
-                        Provide a comma-separated list of tags.
+                        쉼표로 구분된 태그 목록을 제공하십시오.
                      </p>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" size="lg" className="w-full md:w-auto" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Publishing...' : 'Publish Article'}
+                {form.formState.isSubmitting ? '게시 중...' : '기사 게시'}
               </Button>
             </form>
           </Form>

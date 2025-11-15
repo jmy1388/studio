@@ -7,7 +7,7 @@ import Header from '@/components/header';
 
 export const metadata: Metadata = {
   title: 'oob',
-  description: 'Discover stories, thinking, and expertise from writers on any topic.',
+  description: '모든 주제에 대한 작가들의 이야기, 생각, 전문 지식을 만나보세요.',
   icons: [{ rel: "icon", url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"}]
 };
 
@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

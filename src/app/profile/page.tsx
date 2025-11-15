@@ -38,8 +38,8 @@ function ProfilePageContent() {
 
             <Tabs defaultValue={tab || "written"} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
-                    <TabsTrigger value="written">My Articles</TabsTrigger>
-                    <TabsTrigger value="saved">Saved Articles</TabsTrigger>
+                    <TabsTrigger value="written">내 기사</TabsTrigger>
+                    <TabsTrigger value="saved">저장된 기사</TabsTrigger>
                 </TabsList>
                 <TabsContent value="written" className="mt-8">
                     {userArticles.length > 0 ? (
@@ -55,8 +55,8 @@ function ProfilePageContent() {
                         </div>
                     ) : (
                         <div className="text-center py-20 bg-card rounded-lg shadow-sm">
-                            <h3 className="font-headline text-2xl">No articles yet</h3>
-                            <p className="text-muted-foreground mt-2">You haven't written any articles. Start sharing your thoughts!</p>
+                            <h3 className="font-headline text-2xl">아직 기사가 없습니다</h3>
+                            <p className="text-muted-foreground mt-2">아직 작성한 기사가 없습니다. 생각을 공유해 보세요!</p>
                         </div>
                     )}
                 </TabsContent>
@@ -74,8 +74,8 @@ function ProfilePageContent() {
                         </div>
                     ) : (
                         <div className="text-center py-20 bg-card rounded-lg shadow-sm">
-                            <h3 className="font-headline text-2xl">No saved articles</h3>
-                            <p className="text-muted-foreground mt-2">Browse the feed and save articles to read later.</p>
+                            <h3 className="font-headline text-2xl">저장된 기사 없음</h3>
+                            <p className="text-muted-foreground mt-2">피드를 둘러보고 나중에 읽을 기사를 저장하세요.</p>
                         </div>
                     )}
                 </TabsContent>

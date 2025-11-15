@@ -55,10 +55,10 @@ function PersonalizedFeed() {
   if (isLoading) {
       return (
         <div className="mb-12">
-            <h2 className="font-headline text-3xl mb-6">Recommended For You</h2>
+            <h2 className="font-headline text-3xl mb-6">회원님을 위한 추천</h2>
             <div className="flex items-center justify-center text-muted-foreground">
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                <span>Finding articles you'll love...</span>
+                <span>마음에 드실 만한 기사를 찾고 있습니다...</span>
             </div>
         </div>
       )
@@ -70,7 +70,7 @@ function PersonalizedFeed() {
 
   return (
     <div className="mb-12">
-      <h2 className="font-headline text-3xl mb-6">Recommended For You</h2>
+      <h2 className="font-headline text-3xl mb-6">회원님을 위한 추천</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {recommendations.map((article, index) => (
           <ArticleCard
@@ -107,7 +107,7 @@ export default function Home() {
       <header className="text-center mb-12">
         <h1 className="font-headline text-5xl md:text-7xl mb-4 text-primary">oob</h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-          Discover stories, thinking, and expertise from writers on any topic.
+          모든 주제에 대한 작가들의 이야기, 생각, 전문 지식을 만나보세요.
         </p>
       </header>
 
@@ -116,7 +116,7 @@ export default function Home() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search articles by title, author, or tag..."
+            placeholder="제목, 저자 또는 태그로 기사 검색..."
             className="pl-10 w-full h-12 text-base rounded-full shadow-sm"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
@@ -128,7 +128,7 @@ export default function Home() {
 
       <div>
         <h2 className="font-headline text-3xl mb-6">
-          {searchTerm ? 'Search Results' : 'All Articles'}
+          {searchTerm ? '검색 결과' : '모든 기사'}
         </h2>
         {filteredArticles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -143,7 +143,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-16 bg-card rounded-lg">
-            <p className="text-muted-foreground text-lg">No articles found. Try a different search.</p>
+            <p className="text-muted-foreground text-lg">기사를 찾을 수 없습니다. 다른 검색어를 시도해 보세요.</p>
           </div>
         )}
       </div>

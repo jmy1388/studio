@@ -9,6 +9,7 @@ import type { Article, User } from '@/lib/data';
 import { getImage } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 interface ArticleCardProps {
   article: Article;
@@ -65,7 +66,7 @@ export default function ArticleCard({ article, author, index }: ArticleCardProps
               <div>
                 <p className="font-semibold text-sm">{author.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  {format(new Date(article.createdAt), 'MMMM d, yyyy')}
+                  {format(new Date(article.createdAt), 'yyyy년 M월 d일', { locale: ko })}
                 </p>
               </div>
             </>

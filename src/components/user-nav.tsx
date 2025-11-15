@@ -47,26 +47,26 @@ export function UserNav() {
           <DropdownMenuItem asChild>
             <Link href="/profile">
               <UserIcon className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>프로필</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
              <Link href="/profile?tab=saved">
                 <Bookmark className="mr-2 h-4 w-4" />
-                <span>Saved Articles</span>
+                <span>저장된 기사</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/submit">
               <PlusCircle className="mr-2 h-4 w-4" />
-              <span>Submit Article</span>
+              <span>기사 제출</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout()}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>로그아웃</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
