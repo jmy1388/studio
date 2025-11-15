@@ -1,0 +1,156 @@
+/**
+ * @fileOverview This ruleset enforces a strict user-ownership model for user profiles, saved articles, and recommendations. Articles are publicly readable, but only the author can modify them.
+ *
+ * @dataStructure
+ * - /users/{userId}: Stores user profiles.
+ * - /articles/{articleId}: Stores articles with an 'authorId' field.
+ * - /users/{userId}/saved_articles/{savedArticleId}: Stores saved articles for each user.
+ * - /users/{userId}/recommendations/{recommendationId}: Stores recommendations for each user.
+ *
+ * @keySecurityDecisions
+ * - User listing is disabled for the /users collection.
+ * - Public read access is granted to the /articles collection.
+ * - The 'authorId' field is used to enforce ownership for articles.
+ * - All write operations require a verified user identity.
+ *
+ * @denormalizationForAuthorization
+ * - The 'authorId' field is stored directly within the /articles/{articleId} document to avoid costly `get()` calls during authorization.
+ * - Ownership is structurally enforced for user-owned subcollections like `/users/{userId}/saved_articles` and `/users/{userId}/recommendations`.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Enforces user-ownership for user profiles. Only the user can read or write their own profile.
+     * @path /users/{userId}
+     * @allow (create) - User with ID 'user123' creates their profile.
+     *   - request.auth.uid: 'user123'
+     *   - request.resource.data.id: 'user123'
+     * @allow (get, update, delete) - User with ID 'user123' reads, updates, or deletes their profile.
+     *   - request.auth.uid: 'user123'
+     *   - resource.data.id: 'user123'
+     * @deny (create) - User with ID 'user456' attempts to create a profile for 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - request.resource.data.id: 'user123'
+     * @deny (get, update, delete) - User with ID 'user456' attempts to read, update, or delete profile of 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - resource.data.id: 'user123'
+     * @principle Enforces path-based ownership and validates the 'id' field on create.
+     */
+    match /users/{userId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false; // User listing is explicitly disabled.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Allows public read access to articles, but restricts write access to the author.
+     * @path /articles/{articleId}
+     * @allow (get, list) - Any user can read or list articles.
+     * @allow (create) - User with ID 'user123' creates a new article.
+     *   - request.auth.uid: 'user123'
+     *   - request.resource.data.authorId: 'user123'
+     * @allow (update, delete) - User with ID 'user123' updates or deletes their article.
+     *   - request.auth.uid: 'user123'
+     *   - resource.data.authorId: 'user123'
+     * @deny (create) - User with ID 'user456' attempts to create an article with authorId 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - request.resource.data.authorId: 'user123'
+     * @deny (update, delete) - User with ID 'user456' attempts to update or delete article of 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - resource.data.authorId: 'user123'
+     * @principle Allows public reads, enforces document ownership for writes, validates the 'authorId' on create, and requires the document to exist before updating or deleting.
+     */
+    match /articles/{articleId} {
+      function isOwner(authorId) {
+        return request.auth != null && request.auth.uid == authorId;
+      }
+
+      function isExistingOwner(authorId) {
+        return isOwner(authorId) && resource != null;
+      }
+
+      allow get, list: if true;
+      allow create: if isOwner(request.resource.data.authorId);
+      allow update: if isExistingOwner(resource.data.authorId);
+      allow delete: if isExistingOwner(resource.data.authorId);
+    }
+
+    /**
+     * @description Enforces user-ownership for saved articles. Only the user can read, write, or delete their own saved articles.
+     * @path /users/{userId}/saved_articles/{savedArticleId}
+     * @allow (create) - User with ID 'user123' creates a saved article.
+     *   - request.auth.uid: 'user123'
+     *   - request.resource.data.userId: 'user123'
+     * @allow (get, update, delete) - User with ID 'user123' reads, updates, or deletes their saved article.
+     *   - request.auth.uid: 'user123'
+     *   - resource.data.userId: 'user123'
+     * @deny (create) - User with ID 'user456' attempts to create a saved article for 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - request.resource.data.userId: 'user123'
+     * @deny (get, update, delete) - User with ID 'user456' attempts to read, update, or delete saved article of 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - resource.data.userId: 'user123'
+     * @principle Enforces path-based ownership and validates the 'userId' field on create.
+     */
+    match /users/{userId}/saved_articles/{savedArticleId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Enforces user-ownership for recommendations. Only the user can read, write, or delete their own recommendations.
+     * @path /users/{userId}/recommendations/{recommendationId}
+     * @allow (create) - User with ID 'user123' creates a recommendation.
+     *   - request.auth.uid: 'user123'
+     *   - request.resource.data.userId: 'user123'
+     * @allow (get, update, delete) - User with ID 'user123' reads, updates, or deletes their recommendation.
+     *   - request.auth.uid: 'user123'
+     *   - resource.data.userId: 'user123'
+     * @deny (create) - User with ID 'user456' attempts to create a recommendation for 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - request.resource.data.userId: 'user123'
+     * @deny (get, update, delete) - User with ID 'user456' attempts to read, update, or delete recommendation of 'user123'.
+     *   - request.auth.uid: 'user456'
+     *   - resource.data.userId: 'user123'
+     * @principle Enforces path-based ownership and validates the 'userId' field on create.
+     */
+    match /users/{userId}/recommendations/{recommendationId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
