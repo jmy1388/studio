@@ -54,7 +54,7 @@ export default function ArticlePage() {
   }
 
   return (
-    <article className="container max-w-4xl mx-auto py-8 md:py-12 px-4 sm:px-6">
+    <article className="container max-w-3xl mx-auto py-8 md:py-12 px-4 sm:px-6">
       <header className="mb-8">
         <div className="flex flex-wrap gap-2 mb-4">
             {article.tags.map(tag => (

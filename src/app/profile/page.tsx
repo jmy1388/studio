@@ -25,7 +25,7 @@ function ProfilePageContent() {
     const userInitials = user.name.split(' ').map(n => n[0]).join('');
 
     return (
-        <div className="container mx-auto px-4 sm:px-6 py-8 md:py-12 max-w-6xl">
+        <div className="container mx-auto px-4 sm:px-6 py-8 md:py-12 max-w-5xl">
             <header className="flex flex-col items-center text-center md:flex-row md:text-left gap-6 md:gap-8 mb-12">
                 <Avatar className="h-24 w-24 md:h-28 md:w-28 text-4xl">
                     {avatarImage && <AvatarImage src={avatarImage.imageUrl} alt={user.name} data-ai-hint={avatarImage.imageHint} />}

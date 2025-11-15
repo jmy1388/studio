@@ -56,7 +56,7 @@ function PersonalizedFeed() {
   if (isLoading) {
       return (
         <div className="mb-12">
-          <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+          <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
             <h2 className="font-headline text-2xl md:text-3xl mb-6">회원님을 위한 추천</h2>
           </div>
           <div className="flex items-center justify-center text-muted-foreground p-8">
@@ -73,10 +73,10 @@ function PersonalizedFeed() {
 
   return (
     <div className="mb-12">
-       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <h2 className="font-headline text-2xl md:text-3xl mb-6">회원님을 위한 추천</h2>
       </div>
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {recommendations.map((article, index) => (
             <ArticleCard
@@ -111,7 +111,7 @@ export default function Home() {
 
   return (
     <div className="py-6 md:py-10">
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <header className="text-center mb-8 md:mb-12">
             <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl mb-4 text-primary">oob</h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -135,7 +135,7 @@ export default function Home() {
       
       <PersonalizedFeed />
 
-      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <h2 className="font-headline text-2xl md:text-3xl mb-6">
           {searchTerm ? '검색 결과' : '모든 기사'}
         </h2>
