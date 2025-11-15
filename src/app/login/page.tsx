@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -20,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Logo from '@/components/logo';
+import { Separator } from '@/components/ui/separator';
+import { ChromeIcon, ForwardIcon } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email({ message: '유효한 이메일 주소를 입력해주세요.' }),
@@ -32,10 +35,22 @@ const signupSchema = z.object({
     password: z.string().min(8, { message: '비밀번호는 8자 이상이어야 합니다.' }),
 });
 
+const KakaoIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 4.477 0 10C0 13.989 2.548 17.408 6.182 19.01L5.618 22.128L9.382 20.033C10.211 20.354 11.091 20.526 12 20.526C18.627 20.526 24 16.049 24 10.526C24 4.904 18.627 0 12 0Z" fill="#391B1B"/>
+    </svg>
+)
+
+const NaverIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.293 13.7322H7.707V10.2682L12.033 5.95624H20.293V17.9562H11.967L16.293 13.7322Z" fill="#03C75A"/>
+    </svg>
+)
+
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { login, signup } = useAuth();
+  const { login, signup, signInWithGoogle } = useAuth();
   
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -48,33 +63,55 @@ export default function LoginPage() {
   });
 
 
-  function onLoginSubmit(values: z.infer<typeof loginSchema>) {
-    const user = login(values.email, values.password);
-    if (user) {
-      toast({ title: '로그인 성공!', description: `다시 오신 것을 환영합니다, ${user.name}님!` });
-      router.push('/profile');
-    } else {
-      toast({
-        variant: 'destructive',
-        title: '로그인 실패',
-        description: '이메일과 비밀번호를 확인해주세요.',
-      });
-      loginForm.reset();
+  async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+        await login(values.email, values.password);
+        toast({ title: '로그인 성공!', description: `다시 오신 것을 환영합니다!` });
+        router.push('/profile');
+    } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: '로그인 실패',
+            description: '이메일과 비밀번호를 확인해주세요.',
+        });
+        loginForm.reset();
     }
   }
 
-  function onSignupSubmit(values: z.infer<typeof signupSchema>) {
-    const newUser = signup(values.name, values.email, values.password);
-    if (newUser) {
-      toast({ title: '계정이 생성되었습니다!', description: `환영합니다, ${newUser.name}님!` });
-      router.push('/profile');
-    } else {
-      toast({
-        variant: 'destructive',
-        title: '회원가입 실패',
-        description: '이 이메일을 사용하는 사용자가 이미 존재할 수 있습니다.',
-      });
+  async function onSignupSubmit(values: z.infer<typeof signupSchema>) {
+    try {
+        await signup(values.name, values.email, values.password);
+        toast({ title: '계정이 생성되었습니다!', description: `환영합니다, ${values.name}님!` });
+        router.push('/profile');
+    } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: '회원가입 실패',
+            description: '이 이메일을 사용하는 사용자가 이미 존재할 수 있습니다.',
+        });
     }
+  }
+
+  const handleGoogleSignIn = async () => {
+    try {
+        await signInWithGoogle();
+        router.push('/profile');
+        toast({ title: '로그인 성공!', description: '구글 계정으로 로그인되었습니다.' });
+    } catch(error) {
+        console.error(error);
+        toast({
+            variant: 'destructive',
+            title: '구글 로그인 실패',
+            description: '나중에 다시 시도해주세요.',
+        });
+    }
+  }
+
+  const handleSocialLogin = (provider: 'kakao' | 'naver') => {
+    toast({
+        title: `${provider} 로그인`,
+        description: '현재 준비 중인 기능입니다.',
+    })
   }
 
   return (
@@ -174,6 +211,26 @@ export default function LoginPage() {
                 </Form>
             </TabsContent>
         </Tabs>
+        <div className="my-6">
+            <Separator />
+            <div className="relative">
+                <p className="absolute -top-3 left-1/2 -translate-x-1/2 bg-card px-2 text-sm text-muted-foreground">또는</p>
+            </div>
+        </div>
+        <div className="grid grid-cols-1 gap-3">
+             <Button variant="outline" onClick={handleGoogleSignIn}>
+                <ChromeIcon className="mr-2 h-4 w-4" />
+                Google 계정으로 계속하기
+            </Button>
+            <Button variant="outline" onClick={() => handleSocialLogin('kakao')}>
+                <KakaoIcon />
+                카카오 계정으로 계속하기
+            </Button>
+            <Button variant="outline" onClick={() => handleSocialLogin('naver')}>
+                <NaverIcon />
+                네이버 계정으로 계속하기
+            </Button>
+        </div>
     </div>
   );
 }

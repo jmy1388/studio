@@ -1,14 +1,25 @@
 'use client';
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { findUser, addUser, type User } from '@/lib/data';
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { 
+    GoogleAuthProvider, 
+    signInWithPopup, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    User as FirebaseUser
+} from 'firebase/auth';
+import { useFirebase } from '@/firebase';
+import { addUser, findUser, User } from '@/lib/data';
 
 interface AuthContextType {
-  user: User | null;
+  user: FirebaseUser | null;
   loading: boolean;
-  login: (email: string, password?: string) => User | null;
-  signup: (name: string, email: string, password?: string) => User | null;
-  logout: () => void;
+  login: (email: string, password?: string) => Promise<void>;
+  signup: (name: string, email: string, password?: string) => Promise<void>;
+  logout: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   savedArticles: string[];
   readingHistory: string[];
   isArticleSaved: (articleId: string) => boolean;
@@ -19,74 +30,55 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const { auth, isUserLoading } = useFirebase();
+  const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [savedArticles, setSavedArticles] = useState<string[]>([]);
   const [readingHistory, setReadingHistory] = useState<string[]>([]);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('oob-user');
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        const storedSaved = localStorage.getItem(`oob-saved-${parsedUser.id}`);
-        const storedHistory = localStorage.getItem(`oob-history-${parsedUser.id}`);
-        if(storedSaved) setSavedArticles(JSON.parse(storedSaved));
-        if(storedHistory) setReadingHistory(JSON.parse(storedHistory));
-      }
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      localStorage.removeItem('oob-user');
-    } finally {
-      setLoading(false);
+    if (!isUserLoading) {
+      const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+        setUser(firebaseUser);
+        if (firebaseUser) {
+          const storedSaved = localStorage.getItem(`oob-saved-${firebaseUser.uid}`);
+          const storedHistory = localStorage.getItem(`oob-history-${firebaseUser.uid}`);
+          if(storedSaved) setSavedArticles(JSON.parse(storedSaved));
+          if(storedHistory) setReadingHistory(JSON.parse(storedHistory));
+        } else {
+          setSavedArticles([]);
+          setReadingHistory([]);
+        }
+        setLoading(false);
+      });
+      return () => unsubscribe();
     }
-  }, []);
+  }, [isUserLoading, auth]);
 
   const updateLocalStorage = (userId: string, saved: string[], history: string[]) => {
     localStorage.setItem(`oob-saved-${userId}`, JSON.stringify(saved));
     localStorage.setItem(`oob-history-${userId}`, JSON.stringify(history));
   }
 
-  const login = (email: string, password?: string) => {
-    const foundUser = findUser(email, password);
-    if (foundUser) {
-      const { password, ...userToStore } = foundUser;
-      localStorage.setItem('oob-user', JSON.stringify(userToStore));
-      setUser(userToStore);
-      
-      const storedSaved = localStorage.getItem(`oob-saved-${foundUser.id}`);
-      const storedHistory = localStorage.getItem(`oob-history-${foundUser.id}`);
-      const userSaved = storedSaved ? JSON.parse(storedSaved) : [];
-      const userHistory = storedHistory ? JSON.parse(storedHistory) : [];
-
-      setSavedArticles(userSaved);
-      setReadingHistory(userHistory);
-      return userToStore;
-    }
-    return null;
+  const login = async (email: string, password?: string) => {
+    if (!password) throw new Error("Password is required for email login.");
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const signup = (name: string, email: string, password?: string) => {
-    if(findUser(email)){
-        // User already exists
-        return null;
-    }
-    // In a real app, you would hash the password
-    const newUser = addUser({ name, email, password, bio: 'oob의 새로운 작가입니다.', avatarId: 'user-3' });
-    const { password: _, ...userToStore } = newUser;
-    localStorage.setItem('oob-user', JSON.stringify(userToStore));
-    setUser(userToStore);
-    setSavedArticles([]);
-    setReadingHistory([]);
-    return userToStore;
+  const signup = async (name: string, email: string, password?: string) => {
+    if (!password) throw new Error("Password is required for email signup.");
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // You might want to update the user's profile with the name here
+    // For now, we are not storing extra user info in firestore
   }
+  
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
 
-  const logout = () => {
-    localStorage.removeItem('oob-user');
-    setUser(null);
-    setSavedArticles([]);
-    setReadingHistory([]);
+  const logout = async () => {
+    await signOut(auth);
   };
 
   const isArticleSaved = (articleId: string) => {
@@ -102,18 +94,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       newSaved = [...savedArticles, articleId];
     }
     setSavedArticles(newSaved);
-    updateLocalStorage(user.id, newSaved, readingHistory);
+    updateLocalStorage(user.uid, newSaved, readingHistory);
   };
   
   const addReadingHistory = (articleId: string) => {
     if (!user || readingHistory.includes(articleId)) return;
     const newHistory = [...readingHistory, articleId];
     setReadingHistory(newHistory);
-    updateLocalStorage(user.id, savedArticles, newHistory);
+    updateLocalStorage(user.uid, savedArticles, newHistory);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, savedArticles, isArticleSaved, toggleSaveArticle, readingHistory, addReadingHistory }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, signInWithGoogle, savedArticles, isArticleSaved, toggleSaveArticle, readingHistory, addReadingHistory }}>
       {children}
     </AuthContext.Provider>
   );
