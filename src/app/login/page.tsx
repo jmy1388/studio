@@ -115,7 +115,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-sm mx-auto">
         <div className="text-center mb-8 flex flex-col items-center">
             <Logo />
             <h2 className="mt-6 text-center text-3xl font-headline tracking-tight text-foreground">
