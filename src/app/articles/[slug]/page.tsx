@@ -25,7 +25,11 @@ export default function ArticlePage() {
 
   // 좋아요 상태 관리
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(Math.floor(Math.random() * 100)); // 초기 좋아요 수는 랜덤으로 설정
+  const [likeCount, setLikeCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    setLikeCount(Math.floor(Math.random() * 100));
+  }, []);
 
   useEffect(() => {
     if(article && user) {
@@ -59,9 +63,9 @@ export default function ArticlePage() {
 
   const handleLikeClick = () => {
     if (isLiked) {
-      setLikeCount(likeCount - 1);
+      setLikeCount(prev => (prev !== null ? prev -1 : 0));
     } else {
-      setLikeCount(likeCount + 1);
+      setLikeCount(prev => (prev !== null ? prev + 1 : 1));
     }
     setIsLiked(!isLiked);
   }
@@ -134,7 +138,11 @@ export default function ArticlePage() {
                 <Button variant="outline" size="icon" className="rounded-full h-14 w-14" onClick={handleLikeClick}>
                     <Heart className={`h-6 w-6 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
                 </Button>
-                <span className="text-sm text-muted-foreground">{likeCount}명이 좋아합니다</span>
+                {likeCount !== null ? (
+                    <span className="text-sm text-muted-foreground">{likeCount}명이 좋아합니다</span>
+                ) : (
+                    <div className="h-5 w-24 bg-muted rounded-md animate-pulse mt-1"></div>
+                )}
             </div>
        </div>
 
@@ -146,7 +154,7 @@ export default function ArticlePage() {
                         <AvatarFallback>{author.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                     </Avatar>
                     <div className="text-center sm:text-left">
-                        <p className="text-sm text-muted-foreground">작성자</p>
+                        <p className="text-sm text-muted-foreground">작가</p>
                         <h3 className="text-lg font-semibold">{author.name}</h3>
                         <p className="mt-1 text-muted-foreground text-sm">{author.bio}</p>
                     </div>
