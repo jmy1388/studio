@@ -8,10 +8,9 @@ service cloud.firestore {
     }
     
     // User can only write to their own user document
-    // User documents are readable by anyone
+    // User documents are readable only by the user
     match /users/{userId} {
-      allow read: if true;
-      allow update, delete: if request.auth != null && request.auth.uid == userId;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
       allow create: if request.auth != null;
     }
 
