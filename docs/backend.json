@@ -1,14 +1,14 @@
 {
   "entities": {
-    "User": {
+    "UserProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "User",
+      "title": "UserProfile",
       "type": "object",
-      "description": "Represents a user of the oob application.",
+      "description": "Represents a user profile in the oob application.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the User entity."
+          "description": "Unique identifier for the UserProfile entity."
         },
         "email": {
           "type": "string",
@@ -17,19 +17,24 @@
         },
         "username": {
           "type": "string",
-          "description": "User's username or display name."
+          "description": "User's username."
         },
-        "createdAt": {
+        "bio": {
           "type": "string",
-          "description": "Timestamp indicating when the user account was created.",
-          "format": "date-time"
+          "description": "User's biography."
+        },
+        "readingList": {
+          "type": "array",
+          "description": "References to Articles saved by the user. (Relationship: UserProfile 1:N Article)",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
         "id",
         "email",
-        "username",
-        "createdAt"
+        "username"
       ]
     },
     "Article": {
@@ -44,105 +49,39 @@
         },
         "authorId": {
           "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N Article)"
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Article)"
         },
         "title": {
           "type": "string",
           "description": "Title of the article."
         },
-        "summary": {
-          "type": "string",
-          "description": "Brief summary or excerpt of the article."
-        },
         "content": {
           "type": "string",
           "description": "Full content of the article."
         },
-        "imageUrl": {
+        "summary": {
           "type": "string",
-          "description": "URL of the image associated with the article.",
-          "format": "uri"
+          "description": "Brief summary or excerpt of the article."
         },
-        "createdAt": {
+        "publicationDate": {
           "type": "string",
-          "description": "Timestamp indicating when the article was created.",
+          "description": "Date and time the article was published.",
           "format": "date-time"
+        },
+        "keywords": {
+          "type": "array",
+          "description": "Keywords associated with the article for search.",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
         "id",
         "authorId",
         "title",
-        "summary",
         "content",
-        "createdAt"
-      ]
-    },
-    "SavedArticle": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "SavedArticle",
-      "type": "object",
-      "description": "Represents a user's saved article.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the SavedArticle entity."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N SavedArticle)"
-        },
-        "articleId": {
-          "type": "string",
-          "description": "Reference to Article. (Relationship: Article 1:N SavedArticle)"
-        },
-        "savedAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the article was saved.",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "id",
-        "userId",
-        "articleId",
-        "savedAt"
-      ]
-    },
-    "Recommendation": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Recommendation",
-      "type": "object",
-      "description": "Represents an article recommended to a user.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the Recommendation entity."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N Recommendation)"
-        },
-        "articleId": {
-          "type": "string",
-          "description": "Reference to Article. (Relationship: Article 1:N Recommendation)"
-        },
-        "score": {
-          "type": "number",
-          "description": "Recommendation score or confidence level."
-        },
-        "recommendedAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the article was recommended.",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "id",
-        "userId",
-        "articleId",
-        "score",
-        "recommendedAt"
+        "publicationDate"
       ]
     }
   },
@@ -157,15 +96,15 @@
       {
         "path": "/users/{userId}",
         "definition": {
-          "entityName": "User",
+          "entityName": "UserProfile",
           "schema": {
-            "$ref": "#/backend/entities/User"
+            "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Stores user profiles. Path-based ownership ensures only the user can access their own profile.",
+          "description": "Stores user profile information. Path-based ownership ensures that only the authenticated user can access their own profile. The 'userId' parameter corresponds to the Firebase Auth UID.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier of the user."
+              "description": "The unique identifier for the user, matching the Firebase Auth UID."
             }
           ]
         }
@@ -177,56 +116,16 @@
           "schema": {
             "$ref": "#/backend/entities/Article"
           },
-          "description": "Stores articles. Includes 'authorId' to identify the author for authorization rules.",
+          "description": "Stores article data.  The 'authorId' field specifies the author of the article. Open to the public for reading, but only the author can edit/delete based on the 'authorId' matching the request.auth.uid.",
           "params": [
             {
               "name": "articleId",
-              "description": "The unique identifier of the article."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/saved_articles/{savedArticleId}",
-        "definition": {
-          "entityName": "SavedArticle",
-          "schema": {
-            "$ref": "#/backend/entities/SavedArticle"
-          },
-          "description": "Stores saved articles for each user. Path-based ownership ensures only the user can access their own saved articles.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier of the user."
-            },
-            {
-              "name": "savedArticleId",
-              "description": "The unique identifier of the saved article."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/users/{userId}/recommendations/{recommendationId}",
-        "definition": {
-          "entityName": "Recommendation",
-          "schema": {
-            "$ref": "#/backend/entities/Recommendation"
-          },
-          "description": "Stores article recommendations for each user. Path-based ownership ensures only the user can access their own recommendations.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier of the user."
-            },
-            {
-              "name": "recommendationId",
-              "description": "The unique identifier of the recommendation."
+              "description": "The unique identifier for the article."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to support the oob application's features, emphasizing security, scalability, and ease of debugging. The design prioritizes authorization independence by denormalizing data to avoid `get()` calls in security rules. This ensures that atomic operations like transactions and batches are not broken and that debugging is simplified. Structural segregation is used to group data with similar access needs, and access modeling patterns such as path-based ownership and membership maps are applied consistently.\n\n**Authorization Independence and Denormalization:**\nTo ensure authorization independence, the `authorId` is stored within the `/articles/{articleId}` collection. This avoids the need to perform a `get()` request in security rules to verify ownership, enabling atomic operations. Similarly, the `/users/{userId}/saved_articles/{savedArticleId}` and `/users/{userId}/recommendations/{recommendationId}` paths inherit authorization context via the path itself, ensuring that only the user identified by `{userId}` can access these subcollections.\n\n**QAPs Support:**\nThe structure facilitates secure list operations (QAPs) via structural segregation and ownership. Articles are stored in a top-level `/articles` collection, and access to specific articles is controlled via rules that can check the `authorId` or other relevant fields. Private data is stored within user-owned subcollections, such as `/users/{userId}/saved_articles` and `/users/{userId}/recommendations`, preventing unauthorized listing of saved articles and recommendations.\n\n**Global Roles (DBAC):**\nWhile the current schema does not explicitly define global roles, a collection like `/roles_admin/{uid}` could be added to manage admin privileges. The existence of a document in this collection would grant admin access."
+    "reasoning": "The Firestore structure is designed to store user profiles and articles, prioritizing authorization independence and QAPs. User profiles are stored in `/users/{userId}`. Articles are stored in `/articles/{articleId}`.  The `authorId` field in the Article document establishes the relationship between the author and the article, enabling efficient queries for articles by a specific author. User's reading list is stored directly in the user profile document as array of references. This design eliminates the need for `get()` calls in security rules, simplifying the rules and improving performance.  It avoids hierarchical authorization dependencies, making security rules easier to write and maintain.  The structure segregates user data from articles, each having their own security posture."
   }
 }
