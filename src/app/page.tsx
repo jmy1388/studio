@@ -137,7 +137,7 @@ export default function Home() {
 
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <h2 className="font-headline text-2xl md:text-3xl mb-6">
-          {searchTerm ? '검색 결과' : '모든 기사'}
+          {searchTerm ? '검색 결과' : '모든 작품'}
         </h2>
         {filteredArticles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
