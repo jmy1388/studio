@@ -143,29 +143,56 @@ function WriteArticleCta() {
   );
 }
 
+const createDummyArticles = (): Article[] => {
+    const dummies: Article[] = [];
+    const titles = [
+        "가장 인기없는 글",
+        "조금 인기있는 글",
+        "평범한 글",
+        "괜찮은 글",
+        "꽤 인기있는 글",
+        "인기 많은 글",
+        "아주 인기 많은 글",
+        "대박난 글",
+        "전설적인 글",
+        "가장 인기있는 글"
+    ];
+    for (let i = 0; i < 10; i++) {
+        dummies.push({
+            id: `dummy-${i}`,
+            title: titles[i],
+            slug: `dummy-article-${i}`,
+            summary: `이것은 ${i + 1}번째 더미 기사의 요약입니다.`,
+            content: `더미 기사 ${i + 1}의 전체 내용입니다.`,
+            imageId: `article-${(i % 7) + 1}`,
+            authorId: `user-1`,
+            createdAt: new Date().toISOString(),
+            tags: ['더미', '테스트'],
+            likeCount: (i + 1) * 5, // 좋아요 수를 다르게 설정
+        });
+    }
+    return dummies;
+};
+
+
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
-  const { firestore } = useFirebase();
   
-  const articlesQuery = useMemoFirebase(() => {
-    const coll = collection(firestore, 'articles');
-    return query(coll, orderBy('likeCount', 'asc'));
-  }, [firestore]);
-
-  const { data: allArticles, isLoading } = useCollection<Article>(articlesQuery);
+  // Create dummy data for verification
+  const allArticles = useMemo(() => createDummyArticles(), []);
+  const isLoading = false;
 
   const filteredArticles = useMemo(() => {
     if (!allArticles) return [];
     if (!searchTerm) return allArticles;
     const lowercasedTerm = searchTerm.toLowerCase();
     return allArticles.filter(article => {
-      // We can't filter by author name client-side anymore without fetching all users
       return (
         article.title.toLowerCase().includes(lowercasedTerm) ||
         article.summary.toLowerCase().includes(lowercasedTerm) ||
         article.tags.some(tag => tag.toLowerCase().includes(lowercasedTerm))
       );
-    });
+    }).sort((a, b) => a.likeCount - b.likeCount); // Re-sort after filtering
   }, [searchTerm, allArticles]);
 
   return (
