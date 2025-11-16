@@ -13,7 +13,7 @@ import { getPersonalizedArticleRecommendations } from '@/ai/flows/personalized-a
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useFirebase, useCollection, useDoc, useMemoFirebase } from '@/firebase';
-import { collection, doc } from 'firebase/firestore';
+import { collection, doc, query, orderBy } from 'firebase/firestore';
 
 function PersonalizedFeed() {
   const { user, userProfile } = useAuth();
@@ -146,8 +146,13 @@ function WriteArticleCta() {
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const { firestore } = useFirebase();
-  const articlesRef = useMemoFirebase(() => collection(firestore, 'articles'), [firestore]);
-  const { data: allArticles, isLoading } = useCollection<Article>(articlesRef);
+  
+  const articlesQuery = useMemoFirebase(() => {
+    const coll = collection(firestore, 'articles');
+    return query(coll, orderBy('likeCount', 'desc'));
+  }, [firestore]);
+
+  const { data: allArticles, isLoading } = useCollection<Article>(articlesQuery);
 
   const filteredArticles = useMemo(() => {
     if (!allArticles) return [];

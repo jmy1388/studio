@@ -12,8 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Bookmark, Heart, Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useToast } from '@/hooks/use-toast';
-import { useCollection, useDoc, useFirebase, useMemoFirebase } from '@/firebase';
-import { collection, query, where, doc } from 'firebase/firestore';
+import { useCollection, useDoc, useFirebase, useMemoFirebase, updateDocumentNonBlocking } from '@/firebase';
+import { collection, query, where, doc, increment } from 'firebase/firestore';
 import type { Article, UserProfile } from '@/lib/data';
 import { getImage } from '@/lib/data';
 
@@ -33,12 +33,13 @@ export default function ArticlePage() {
   const { data: author, isLoading: authorLoading } = useDoc<UserProfile>(authorRef);
 
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState<number | null>(null);
-
+  
   useEffect(() => {
-    // This should only run on the client
-    setLikeCount(Math.floor(Math.random() * 100));
-  }, []);
+    if (article) {
+      const liked = localStorage.getItem(`liked_${article.id}`) === 'true';
+      setIsLiked(liked);
+    }
+  }, [article]);
   
   useEffect(() => {
     if(article && user) {
@@ -74,12 +75,16 @@ export default function ArticlePage() {
   }
 
   const handleLikeClick = () => {
-    if (isLiked) {
-      setLikeCount(prev => (prev !== null ? prev -1 : 0));
-    } else {
-      setLikeCount(prev => (prev !== null ? prev + 1 : 1));
-    }
-    setIsLiked(!isLiked);
+    if (!article) return;
+    const articleRef = doc(firestore, 'articles', article.id);
+    const newLikedState = !isLiked;
+
+    updateDocumentNonBlocking(articleRef, {
+      likeCount: increment(newLikedState ? 1 : -1)
+    });
+    
+    setIsLiked(newLikedState);
+    localStorage.setItem(`liked_${article.id}`, String(newLikedState));
   }
 
   return (
@@ -150,8 +155,8 @@ export default function ArticlePage() {
                 <Button variant="outline" size="icon" className="rounded-full h-14 w-14" onClick={handleLikeClick}>
                     <Heart className={`h-6 w-6 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
                 </Button>
-                {likeCount !== null ? (
-                    <span className="text-sm text-muted-foreground">{likeCount}명이 좋아합니다</span>
+                {article.likeCount !== null ? (
+                    <span className="text-sm text-muted-foreground">{article.likeCount}명이 좋아합니다</span>
                 ) : (
                     <div className="h-5 w-24 bg-muted rounded-md animate-pulse mt-1"></div>
                 )}

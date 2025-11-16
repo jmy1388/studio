@@ -22,6 +22,7 @@ export interface Article {
   authorId: string; // Corresponds to UserProfile ID (Firebase Auth UID)
   createdAt: string; // Should be a timestamp
   tags: string[];
+  likeCount: number;
 }
 
 
@@ -46,5 +47,5 @@ export const addArticle = (article: Omit<Article, 'id' | 'slug' | 'createdAt'>):
     id: 'temp',
     slug: 'temp',
     createdAt: new Date().toISOString(),
+    likeCount: 0,
 });
-
