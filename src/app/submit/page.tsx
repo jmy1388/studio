@@ -140,7 +140,7 @@ export default function SubmitPage() {
                   <FormItem>
                     <FormLabel className="text-lg">태그</FormLabel>
                     <FormControl>
-                      <Input placeholder="기술, 철학, 예술" {...field} />
+                      <Input placeholder="예시: 기술, 철학, 예술" {...field} />
                     </FormControl>
                      <p className="text-sm text-muted-foreground">
                         원하는 태그를 쉼표로 구분하세요
