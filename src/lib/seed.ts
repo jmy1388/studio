@@ -7,17 +7,6 @@ const createSlug = (title: string) => {
     return title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 };
 
-// Helper to create a random date within the last 14 days
-const randomDateInPastTwoWeeks = () => {
-    const date = new Date();
-    const randomDaysAgo = Math.floor(Math.random() * 14) + 1; // 1 to 14 days ago
-    date.setDate(date.getDate() - randomDaysAgo);
-    // Add random hours/minutes to make times different
-    date.setHours(Math.floor(Math.random() * 24));
-    date.setMinutes(Math.floor(Math.random() * 60));
-    return Timestamp.fromDate(date);
-}
-
 export const articlesToSeed = [
     // 학업 관련 글 5개
     {
@@ -99,12 +88,19 @@ export const seedArticles = async (firestore: Firestore) => {
     const articlesCollection = collection(firestore, 'articles');
     const batch = writeBatch(firestore);
 
-    articlesToSeed.forEach(articleData => {
+    articlesToSeed.forEach((articleData, index) => {
         const docRef = doc(articlesCollection); // Auto-generate ID
         const slug = createSlug(articleData.title);
+        
+        // Create a new date for each article, going back one day per article
+        const articleDate = new Date();
+        articleDate.setDate(articleDate.getDate() - (index + 1));
+        articleDate.setHours(Math.floor(Math.random() * 12) + 8); // Random hour between 8 AM and 8 PM
+        articleDate.setMinutes(Math.floor(Math.random() * 60));
+
         const newArticle = {
             ...articleData,
-            createdAt: randomDateInPastTwoWeeks(), // Generate random date here
+            createdAt: Timestamp.fromDate(articleDate),
             slug: `${slug}-${docRef.id.substring(0, 5)}`, // Make slug unique
         };
         batch.set(docRef, newArticle);
@@ -112,7 +108,7 @@ export const seedArticles = async (firestore: Firestore) => {
 
     try {
         await batch.commit();
-        console.log('Successfully seeded articles.');
+        console.log('Successfully seeded articles with varied dates.');
     } catch (error) {
         console.error('Error seeding articles:', error);
     }
