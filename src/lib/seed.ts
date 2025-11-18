@@ -91,8 +91,10 @@ export const seedArticles = async (firestore: Firestore) => {
         const docRef = doc(articlesCollection); // Auto-generate ID
         const slug = createSlug(articleData.title);
         
+        // Generate a random date within the last 2 weeks
         const articleDate = new Date();
-        articleDate.setDate(articleDate.getDate() - (index + 1));
+        const randomDaysAgo = Math.floor(Math.random() * 14);
+        articleDate.setDate(articleDate.getDate() - randomDaysAgo);
         articleDate.setHours(Math.floor(Math.random() * 24));
         articleDate.setMinutes(Math.floor(Math.random() * 60));
 
@@ -106,7 +108,7 @@ export const seedArticles = async (firestore: Firestore) => {
 
     try {
         await batch.commit();
-        console.log('Successfully seeded articles with varied dates.');
+        console.log('Successfully seeded articles with random dates in the last two weeks.');
     } catch (error) {
         console.error('Error seeding articles:', error);
     }
