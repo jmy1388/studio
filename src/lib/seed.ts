@@ -1,5 +1,5 @@
 
-import { collection, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import type { Firestore } from 'firebase/firestore';
 
 // Helper function to create a slug from a title
@@ -89,7 +89,7 @@ export const seedArticles = async (firestore: Firestore) => {
     const batch = writeBatch(firestore);
 
     articlesToSeed.forEach(articleData => {
-        const docRef = collection(firestore, 'articles').doc(); // Auto-generate ID
+        const docRef = doc(articlesCollection); // Auto-generate ID
         const slug = createSlug(articleData.title);
         const newArticle = {
             ...articleData,
