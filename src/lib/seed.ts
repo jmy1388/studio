@@ -119,6 +119,7 @@ export async function seedArticles(db: Firestore) {
   // Check if there's any data already
   const snapshot = await getDocs(articlesCollection);
   if (!snapshot.empty) {
+    console.log('Database already seeded.');
     return; // Don't seed if data exists
   }
 
@@ -138,5 +139,3 @@ export async function seedArticles(db: Firestore) {
 
   console.log('Database seeded successfully!');
 }
-
-    
