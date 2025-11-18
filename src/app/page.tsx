@@ -18,9 +18,6 @@ function WriteArticleCta() {
         <div className="bg-card border rounded-lg p-6 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-foreground">당신의 이야기를 공유해보세요</h3>
-            <p className="text-muted-foreground text-sm mt-1">
-              당신의 아이디어를 기사로 만들어 세상과 소통하세요.
-            </p>
           </div>
           <Button asChild className="w-full sm:w-auto mt-4 sm:mt-0">
             <Link href="/submit">
