@@ -3,11 +3,9 @@
 
 import { useEffect, useState } from 'react';
 import { useFirebase } from '@/firebase';
-import { collection, getDocs, writeBatch, query, deleteDoc } from 'firebase/firestore';
-import { seedArticles } from '@/lib/seed';
+import { collection, getDocs, writeBatch, query } from 'firebase/firestore';
 
-// This component will run once on mount, check if articles exist,
-// and if not, it will seed the database.
+// This component will run once on mount to clear any existing dummy data.
 export function SeedData() {
   const { firestore } = useFirebase();
   const [isSeeding, setIsSeeding] = useState(false);
@@ -17,40 +15,40 @@ export function SeedData() {
       return;
     }
 
-    const checkAndSeedDatabase = async () => {
+    const clearDummyData = async () => {
       if (isSeeding) return;
 
       setIsSeeding(true);
       try {
-        console.log('Force re-seeding database...');
+        console.log('Clearing all dummy articles...');
         const articlesCollection = collection(firestore, 'articles');
         const q = query(articlesCollection);
         const snapshot = await getDocs(q);
 
-        // Delete all existing documents in the articles collection
         if (!snapshot.empty) {
             console.log(`Deleting ${snapshot.size} existing articles...`);
             const deleteBatch = writeBatch(firestore);
             snapshot.docs.forEach(doc => {
+                // To avoid deleting user-created articles, we could add a check here.
+                // For now, per the request, we are clearing all articles.
                 deleteBatch.delete(doc.ref);
             });
             await deleteBatch.commit();
-            console.log('Existing articles deleted.');
+            console.log('All articles have been deleted.');
+        } else {
+            console.log('No articles found to delete.');
         }
 
-        // Seed with new data
-        console.log('Seeding database with new initial data...');
-        await seedArticles(firestore);
-        console.log('Database has been re-seeded.');
-
       } catch (error) {
-        console.error('Error during database seed process:', error);
+        console.error('Error during database clearing process:', error);
       } finally {
         setIsSeeding(false);
       }
     };
 
-    checkAndSeedDatabase();
+    // We only want this to run once to clear the data.
+    // In a real app, you might remove this component entirely after it runs.
+    clearDummyData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firestore]);
 
