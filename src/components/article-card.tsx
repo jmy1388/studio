@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Skeleton } from './ui/skeleton';
+import type { Timestamp } from 'firebase/firestore';
+
 
 interface ArticleCardProps {
   article: Article;
@@ -19,7 +21,7 @@ interface ArticleCardProps {
   index: number;
 }
 
-function AuthorDetails({ authorUsername, createdAt }: { authorUsername?: string, createdAt: string }) {
+function AuthorDetails({ authorUsername, createdAt }: { authorUsername?: string, createdAt: Timestamp }) {
     if (!authorUsername) {
         return (
             <div className="flex items-center gap-3">
@@ -33,6 +35,7 @@ function AuthorDetails({ authorUsername, createdAt }: { authorUsername?: string,
     }
     
     const authorAvatar = getImage('user-1'); // Placeholder
+    const date = createdAt.toDate();
 
     return (
         <div className="flex items-center gap-3">
@@ -43,7 +46,7 @@ function AuthorDetails({ authorUsername, createdAt }: { authorUsername?: string,
             <div>
                 <p className="font-semibold text-sm">{authorUsername}</p>
                 <p className="text-xs text-muted-foreground">
-                    {format(new Date(createdAt), 'yyyy년 M월 d일', { locale: ko })}
+                    {format(date, 'yyyy년 M월 d일', { locale: ko })}
                 </p>
             </div>
         </div>

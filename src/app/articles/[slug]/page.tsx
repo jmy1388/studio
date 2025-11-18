@@ -58,6 +58,8 @@ export default function ArticlePage() {
     localStorage.setItem(`liked_${article.id}`, String(newLikedState));
   }
 
+  const date = article.createdAt.toDate();
+
   return (
     <article className="container max-w-3xl mx-auto py-8 md:py-12 px-4 sm:px-6">
       <header className="mb-8">
@@ -82,7 +84,7 @@ export default function ArticlePage() {
                 <div>
                   <p className="font-semibold">{article.authorUsername}</p>
                   <p className="text-sm text-muted-foreground">
-                    게시일: {format(new Date(article.createdAt), 'yyyy년 M월 d일', { locale: ko })}
+                    게시일: {format(date, 'yyyy년 M월 d일', { locale: ko })}
                   </p>
                 </div>
               </>
