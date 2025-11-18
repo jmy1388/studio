@@ -9,7 +9,7 @@ import ArticleCard from '@/components/article-card';
 import type { Article } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { collection, query, orderBy, Timestamp } from 'firebase/firestore';
 
 function WriteArticleCta() {
   return (
@@ -36,16 +36,29 @@ export default function Home() {
   const { firestore } = useFirebase();
 
   const articlesQuery = useMemoFirebase(
-    () => query(collection(firestore, 'articles'), orderBy('likeCount', 'desc')),
+    () => firestore ? query(collection(firestore, 'articles'), orderBy('likeCount', 'desc')) : null,
     [firestore]
   );
   const { data: allArticles, isLoading } = useCollection<Article>(articlesQuery);
 
+  const articlesWithDate = useMemo(() => {
+    return allArticles?.map(article => {
+        if (article.createdAt && typeof (article.createdAt as any).seconds === 'number') {
+            return {
+                ...article,
+                createdAt: new Timestamp((article.createdAt as any).seconds, (article.createdAt as any).nanoseconds)
+            }
+        }
+        return article;
+    })
+  }, [allArticles]);
+
+
   const filteredArticles = useMemo(() => {
-    if (!allArticles) return [];
-    if (!searchTerm) return allArticles;
+    if (!articlesWithDate) return [];
+    if (!searchTerm) return articlesWithDate;
     const lowercasedTerm = searchTerm.toLowerCase();
-    return allArticles.filter(article => {
+    return articlesWithDate.filter(article => {
       return (
         article.title.toLowerCase().includes(lowercasedTerm) ||
         article.summary.toLowerCase().includes(lowercasedTerm) ||
@@ -53,7 +66,7 @@ export default function Home() {
         article.tags.some(tag => tag.toLowerCase().includes(lowercasedTerm))
       );
     });
-  }, [searchTerm, allArticles]);
+  }, [searchTerm, articlesWithDate]);
 
   return (
     <div className="py-6 md:py-10">

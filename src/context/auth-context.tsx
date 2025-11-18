@@ -8,10 +8,11 @@ import {
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
+    onAuthStateChanged,
     User as FirebaseUser
 } from 'firebase/auth';
-import { doc, serverTimestamp } from 'firebase/firestore';
-import { useFirebase, useUser, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
+import { doc, serverTimestamp, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { useFirebase, useDoc, useMemoFirebase, setDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase';
 import type { UserProfile } from '@/lib/data';
 
 
@@ -30,6 +31,32 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+export function useUser() {
+  const { auth } = useFirebase();
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [isUserLoading, setIsUserLoading] = useState(true);
+  const [userError, setUserError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    if (!auth) {
+        setIsUserLoading(false);
+        setUserError(new Error("Auth service not available."));
+        return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (fbUser) => {
+        setUser(fbUser);
+        setIsUserLoading(false);
+    }, (error) => {
+        setUserError(error);
+        setIsUserLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  return { user, isUserLoading, userError };
+}
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { auth, firestore } = useFirebase();
   const { user, isUserLoading } = useUser();
@@ -40,8 +67,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(isUserLoading || isProfileLoading);
-  }, [isUserLoading, isProfileLoading]);
+    setLoading(isUserLoading || (user ? isProfileLoading : false));
+  }, [isUserLoading, isProfileLoading, user]);
 
   const login = async (email: string, password?: string) => {
     if (!password) throw new Error("Password is required for email login.");
@@ -56,13 +83,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const newUser = userCredential.user;
         await updateProfile(newUser, { displayName: name });
         const userProfileDocRef = doc(firestore, "users", newUser.uid);
-        setDocumentNonBlocking(userProfileDocRef, {
+        const newProfile: UserProfile = {
             id: newUser.uid,
             username: name,
             email: email,
             bio: '새로운 작가입니다! 제 이야기를 세상과 공유하게 되어 기쁩니다.',
             readingList: [],
-        }, { merge: true });
+            readingHistory: [],
+        };
+        setDocumentNonBlocking(userProfileDocRef, newProfile, { merge: true });
     }
   }
   
@@ -73,13 +102,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (googleUser && googleUser.email) {
         const userProfileDocRef = doc(firestore, "users", googleUser.uid);
-        setDocumentNonBlocking(userProfileDocRef, {
+        const newProfile: UserProfile = {
             id: googleUser.uid,
             username: googleUser.displayName || 'New User',
             email: googleUser.email,
             bio: 'Joined through Google! Excited to share my stories.',
             readingList: [],
-        }, { merge: true });
+            readingHistory: [],
+        };
+        setDocumentNonBlocking(userProfileDocRef, newProfile, { merge: true });
     }
   };
 
@@ -94,22 +125,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const toggleSaveArticle = useCallback((articleId: string) => {
     if (!user || !userProfile) return;
     
-    let newReadingList: string[];
-    if (userProfile.readingList?.includes(articleId)) {
-        newReadingList = userProfile.readingList.filter(id => id !== articleId);
-    } else {
-        newReadingList = [...(userProfile.readingList || []), articleId];
-    }
-    
     const userProfileDocRef = doc(firestore, 'users', user.uid);
-    setDocumentNonBlocking(userProfileDocRef, { readingList: newReadingList }, { merge: true });
+    const isCurrentlySaved = userProfile.readingList?.includes(articleId);
+
+    updateDocumentNonBlocking(userProfileDocRef, {
+        readingList: isCurrentlySaved ? arrayRemove(articleId) : arrayUnion(articleId)
+    });
 
   }, [user, userProfile, firestore]);
   
   const addReadingHistory = useCallback((articleId: string) => {
-      // This is a placeholder as reading history is not fully implemented in firestore yet.
-      // A more robust implementation would involve a separate collection or a more complex user document structure.
-  }, []);
+    if (!user || !userProfile) return;
+    
+    const userProfileDocRef = doc(firestore, 'users', user.uid);
+    // Add to history only if it's not already there
+    if (!userProfile.readingHistory?.includes(articleId)) {
+        updateDocumentNonBlocking(userProfileDocRef, {
+            readingHistory: arrayUnion(articleId)
+        });
+    }
+  }, [user, userProfile, firestore]);
 
   const value = {
       user,

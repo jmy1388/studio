@@ -1,5 +1,14 @@
 import type { Timestamp } from 'firebase/firestore';
-import { PlaceHolderImages, type ImagePlaceholder } from './placeholder-images';
+import data from './placeholder-images.json';
+
+export type ImagePlaceholder = {
+  id: string;
+  description: string;
+  imageUrl: string;
+  imageHint: string;
+};
+
+export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
 
 export interface Article {
   id:string;
@@ -12,6 +21,15 @@ export interface Article {
   createdAt: Timestamp;
   tags: string[];
   likeCount: number;
+}
+
+export interface UserProfile {
+    id: string;
+    username: string;
+    email: string;
+    bio: string;
+    readingList: string[]; // array of article IDs
+    readingHistory: string[]; // array of article IDs
 }
 
 

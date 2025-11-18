@@ -5,11 +5,18 @@ service cloud.firestore {
     
     // Articles can be read by anyone
     // Articles can be created by anyone
-    // Articles cannot be updated or deleted
+    // Articles can be updated (for likes) by anyone, but not deleted
     match /articles/{articleId} {
       allow read: if true;
       allow create: if true;
-      allow update, delete: if false;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']);
+      allow delete: if false;
+    }
+
+    // Users can read and write their own profile
+    match /users/{userId} {
+      allow read, update, create: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
     }
   }
 }
