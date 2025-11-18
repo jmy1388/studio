@@ -8,7 +8,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
   title: 'oob',
-  description: '모든 주제에 대한 작가들의 이야기, 생각, 전문 지식을 만나보세요.',
+  description: '청소년 작가들의 이야기, 생각을 만나보세요.',
   icons: [{ rel: "icon", url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"}]
 };
 
