@@ -17,37 +17,30 @@ export function SeedData() {
       return;
     }
 
-    const reseedDatabase = async () => {
+    const checkAndSeedDatabase = async () => {
       setIsSeeding(true);
       try {
-        console.log('Reseeding database with fresh data...');
+        console.log('Checking if database needs seeding...');
         const articlesCollection = collection(firestore, 'articles');
         const snapshot = await getDocs(articlesCollection);
         
-        // Delete all existing documents in the articles collection
-        if (!snapshot.empty) {
-            const deleteBatch = writeBatch(firestore);
-            snapshot.docs.forEach(doc => {
-                deleteBatch.delete(doc.ref);
-            });
-            await deleteBatch.commit();
-            console.log('Existing articles deleted.');
+        // Only seed if the collection is empty
+        if (snapshot.empty) {
+            console.log('Database is empty. Seeding with initial data...');
+            await seedArticles(firestore);
+            console.log('Database has been seeded.');
+        } else {
+            console.log('Database already contains data. Skipping seed.');
         }
 
-        // Seed the database with new articles
-        await seedArticles(firestore);
-        console.log('Database has been re-seeded.');
-
       } catch (error) {
-        console.error('Error during database re-seeding:', error);
+        console.error('Error during database seed check:', error);
       } finally {
         setIsSeeding(false);
       }
     };
 
-    // We will re-seed every time the app loads in this development environment
-    // to ensure date changes are always reflected.
-    reseedDatabase();
+    checkAndSeedDatabase();
 
   }, [firestore]);
 
