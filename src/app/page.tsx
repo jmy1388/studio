@@ -73,7 +73,7 @@ export default function Home() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="제목, 작가 또는 태그로 기사 검색..."
+              placeholder="제목, 작가 또는 태그로 글 검색"
               className="pl-12 w-full h-12 text-base rounded-full shadow-sm"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
@@ -105,7 +105,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-16 bg-card rounded-lg">
-            <p className="text-muted-foreground text-lg">기사를 찾을 수 없습니다. 다른 검색어를 시도해 보세요.</p>
+            <p className="text-muted-foreground text-lg">글을 찾을 수 없습니다. 다른 검색어를 시도해 보세요.</p>
           </div>
         )}
       </div>
