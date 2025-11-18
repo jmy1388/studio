@@ -71,7 +71,7 @@ export default function SubmitPage() {
     <div className="container max-w-3xl mx-auto py-8 md:py-12 px-4 sm:px-6">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline text-3xl">기사 제출</CardTitle>
+          <CardTitle className="font-headline text-3xl">글쓰기</CardTitle>
           <CardDescription>세상과 당신의 이야기를 공유하세요. 아래 양식을 작성하여 기사를 게시하세요.</CardDescription>
         </CardHeader>
         <CardContent>
