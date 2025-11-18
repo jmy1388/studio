@@ -28,7 +28,7 @@ const articleSchema = z.object({
   summary: z.string().min(20, { message: '요약은 20자 이상이어야 합니다.' }).max(200),
   content: z.string().min(100, { message: '내용은 100자 이상이어야 합니다.' }),
   tags: z.string().refine(value => value.split(',').every(tag => tag.trim().length > 0), {
-    message: '쉼표로 구분된 태그를 제공하십시오.',
+    message: '원하는 태그를 쉼표로 구분하세요',
   }),
 });
 
@@ -143,7 +143,7 @@ export default function SubmitPage() {
                       <Input placeholder="기술, 철학, 예술" {...field} />
                     </FormControl>
                      <p className="text-sm text-muted-foreground">
-                        쉼표로 구분된 태그 목록을 제공하십시오.
+                        원하는 태그를 쉼표로 구분하세요
                      </p>
                     <FormMessage />
                   </FormItem>
