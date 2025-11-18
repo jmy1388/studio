@@ -112,7 +112,7 @@ export default function SubmitPage() {
                 name="summary"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">요약</FormLabel>
+                    <FormLabel className="text-lg">글 소개</FormLabel>
                     <FormControl>
                       <Textarea placeholder="글에 대한 간략한 소개" {...field} />
                     </FormControl>
