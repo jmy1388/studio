@@ -127,7 +127,7 @@ export default function SubmitPage() {
                   <FormItem>
                     <FormLabel className="text-lg">내용</FormLabel>
                     <FormControl>
-                      <Textarea className="min-h-[300px]" placeholder="여기에 전체 기사를 작성하세요. 단락에 줄 바꿈을 사용할 수 있습니다." {...field} />
+                      <Textarea className="min-h-[300px]" placeholder="여기에 전체 글을 작성하세요. 단락에 줄 바꿈을 사용할 수 있습니다" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
