@@ -21,32 +21,7 @@ const randomDateInPastTwoWeeks = (): Date => {
 export const articlesToSeed: any[] = [];
 
 export const seedArticles = async (firestore: Firestore) => {
-    if (articlesToSeed.length === 0) {
-        console.log('No articles to seed.');
-        return;
-    }
-
-    const articlesCollection = collection(firestore, 'articles');
-    const batch = writeBatch(firestore);
-
-    articlesToSeed.forEach((articleData) => {
-        const docRef = doc(articlesCollection); // Auto-generate ID
-        const slug = createSlug(articleData.title);
-        
-        const articleDate = randomDateInPastTwoWeeks();
-
-        const newArticle = {
-            ...articleData,
-            createdAt: Timestamp.fromDate(articleDate),
-            slug: `${slug}-${docRef.id.substring(0, 5)}`, // Make slug unique
-        };
-        batch.set(docRef, newArticle);
-    });
-
-    try {
-        await batch.commit();
-        console.log('Successfully seeded articles.');
-    } catch (error) {
-        console.error('Error seeding articles:', error);
-    }
+    // This function is intentionally left empty to prevent any data seeding.
+    console.log('Data seeding is disabled.');
+    return;
 };
