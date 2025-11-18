@@ -150,7 +150,7 @@ export default function SubmitPage() {
                 )}
               />
               <Button type="submit" size="lg" className="w-full md:w-auto" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? '게시 중...' : '기사 게시'}
+                {form.formState.isSubmitting ? '게시 중...' : '작품 공유'}
               </Button>
             </form>
           </Form>
