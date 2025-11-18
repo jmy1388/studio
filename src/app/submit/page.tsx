@@ -97,7 +97,7 @@ export default function SubmitPage() {
                   <FormItem>
                     <FormLabel className="text-lg">제목</FormLabel>
                     <FormControl>
-                      <Input placeholder="모든 것의 미래" {...field} />
+                      <Input placeholder="제목을 입력하세요" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
