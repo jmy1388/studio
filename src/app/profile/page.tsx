@@ -19,7 +19,7 @@ function ProfilePageContent() {
     const searchParams = useSearchParams()
     const tab = searchParams.get('tab')
 
-    const userArticlesQuery = useMemoFirebase(() => user ? query(collection(firestore, 'articles'), where('authorId', '==', user.uid)) : null, [firestore, user]);
+    const userArticlesQuery = useMemoFirebase(() => user ? query(collection(firestore, 'articles'), where('authorUsername', '==', userProfile?.username)) : null, [firestore, user, userProfile]);
     const { data: userArticles, isLoading: articlesLoading } = useCollection<Article>(userArticlesQuery);
     
     const savedArticlesQuery = useMemoFirebase(() => {
@@ -62,7 +62,7 @@ function ProfilePageContent() {
                                 <ArticleCard
                                     key={article.id}
                                     article={article}
-                                    authorId={article.authorId}
+                                    authorUsername={article.authorUsername}
                                     index={index}
                                 />
                             ))}
@@ -82,7 +82,7 @@ function ProfilePageContent() {
                                 <ArticleCard
                                     key={article.id}
                                     article={article}
-                                    authorId={article.authorId}
+                                    authorUsername={article.authorUsername}
                                     index={index}
                                 />
                             ))}

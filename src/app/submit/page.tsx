@@ -59,7 +59,7 @@ export default function SubmitPage() {
             createdAt: serverTimestamp(),
             likeCount: 0,
         };
-        const docRef = await addDocumentNonBlocking(articlesCollection, newArticle);
+        addDocumentNonBlocking(articlesCollection, newArticle);
         
         toast({ title: '기사 제출됨!', description: '기사가 게시되었습니다.' });
         
