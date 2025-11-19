@@ -11,26 +11,6 @@ import { Button } from '@/components/ui/button';
 import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, query, orderBy, Timestamp } from 'firebase/firestore';
 
-function WriteArticleCta() {
-  return (
-    <div className="my-8 md:my-12">
-      <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-        <div className="bg-card border rounded-lg p-6 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-foreground">당신의 이야기를 공유해보세요</h3>
-          </div>
-          <Button asChild className="w-full sm:w-auto mt-4 sm:mt-0">
-            <Link href="/submit">
-              <PenSquare className="mr-2 h-4 w-4" />
-              글쓰기
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const { firestore } = useFirebase();
@@ -91,8 +71,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <WriteArticleCta />
 
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         <h2 className="font-headline text-2xl md:text-3xl mb-6">
