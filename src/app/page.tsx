@@ -74,7 +74,7 @@ export default function Home() {
         <header className="text-center mb-8 md:mb-12">
           <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl mb-4 text-primary">oob</h1>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            청소년 작가들의 이야기, 생각을 만나보세요
+            나의 글을 세상에 꺼내는 공간, oob
           </p>
         </header>
 

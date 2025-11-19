@@ -9,7 +9,7 @@ import SeedData from '@/components/seed-data';
 
 export const metadata: Metadata = {
   title: 'oob',
-  description: '청소년 작가들의 이야기, 생각을 만나보세요.',
+  description: '나의 글을 세상에 꺼내는 공간, oob',
   icons: [{ rel: "icon", url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>"}]
 };
 
