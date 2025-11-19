@@ -2,17 +2,15 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import Image from 'next/image';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, Loader2 } from 'lucide-react';
+import { Heart, Loader2, User } from 'lucide-react';
 import { useFirebase } from '@/firebase';
 import { doc, increment, onSnapshot, updateDoc } from 'firebase/firestore';
 import type { Article } from '@/lib/data';
-import { getImage } from '@/lib/data';
 
 // A non-blocking update function for the client
 const updateDocumentNonBlocking = (docRef: any, data: any) => {
@@ -64,9 +62,6 @@ export default function ArticlePageContent({ article: initialArticle }: { articl
     return <div className="flex justify-center items-center h-screen"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>
   }
   
-  const image = getImage(article.imageId);
-  const authorAvatar = article.authorUsername ? getImage('user-1') : undefined; // Placeholder avatar logic
-  
   const handleLikeClick = () => {
     if (!article || !firestore) return;
     const articleRef = doc(firestore, 'articles', article.id);
@@ -97,9 +92,8 @@ export default function ArticlePageContent({ article: initialArticle }: { articl
         <div className="mt-6 flex items-center gap-4">
              {article.authorUsername && (
               <>
-                <Avatar className="h-12 w-12">
-                   {authorAvatar && <AvatarImage src={authorAvatar.imageUrl} alt={article.authorUsername} data-ai-hint={authorAvatar.imageHint} />}
-                  <AvatarFallback>{article.authorUsername.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                <Avatar className="h-12 w-12 bg-muted text-muted-foreground flex items-center justify-center">
+                  <User className="h-6 w-6" />
                 </Avatar>
                 <div>
                   <p className="font-semibold">{article.authorUsername}</p>
@@ -112,20 +106,7 @@ export default function ArticlePageContent({ article: initialArticle }: { articl
         </div>
       </header>
 
-      {image && (
-        <div className="relative aspect-video w-full rounded-lg overflow-hidden my-8 shadow-lg">
-          <Image
-            src={image.imageUrl}
-            alt={article.title}
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint={image.imageHint}
-          />
-        </div>
-      )}
-
-      <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-foreground prose-headings:text-foreground prose-strong:text-foreground">
+      <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-foreground prose-headings:text-foreground prose-strong:text-foreground my-8">
         {article.content.split('\n\n').map((paragraph, index) => (
           <p key={index} className="text-base leading-relaxed md:text-lg md:leading-relaxed">{paragraph}</p>
         ))}
@@ -147,9 +128,8 @@ export default function ArticlePageContent({ article: initialArticle }: { articl
        <div className="mt-12 border-t pt-8">
             {article.authorUsername && (
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-lg bg-card p-4 sm:p-6">
-                     <Avatar className="h-16 w-16">
-                        {authorAvatar && <AvatarImage src={authorAvatar.imageUrl} alt={article.authorUsername} data-ai-hint={authorAvatar.imageHint} />}
-                        <AvatarFallback>{article.authorUsername.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                     <Avatar className="h-16 w-16 bg-muted text-muted-foreground flex items-center justify-center">
+                        <User className="h-8 w-8" />
                     </Avatar>
                     <div className="text-center sm:text-left">
                         <p className="text-sm text-muted-foreground">작가</p>
