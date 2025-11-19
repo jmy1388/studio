@@ -98,11 +98,11 @@ export default function ArticleCard({ article, authorUsername, index }: ArticleC
 
   return (
     <Card
-      className="relative flex flex-col overflow-hidden transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl animate-fade-in-up border-transparent shadow-none hover:bg-card"
+      className="relative flex flex-col overflow-visible transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-xl animate-fade-in-up border-transparent shadow-none hover:bg-card"
       style={{ animationDelay: `${index * 100}ms` }}
     >
         {index === 0 && (
-          <div className="absolute top-2 left-2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold">
+          <div className="absolute -top-3 -left-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold">
             인기
           </div>
         )}
