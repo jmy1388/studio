@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -6,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Logo from './logo';
-import { PlusCircle, Search, X } from 'lucide-react';
+import { PlusCircle, Search, X, Tags } from 'lucide-react';
 import { Input } from './ui/input';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +24,14 @@ export default function Header() {
     } else {
       params.delete('q');
     }
-    router.push(`${pathname}?${params.toString()}`);
+    // Redirect to home page for searching
+    router.push(`/?${params.toString()}`);
+     if(pathname !== '/') {
+        // If we are not on the homepage, a search action should navigate to the homepage.
+        // We use window.location to force a full page reload which will pick up the new query param.
+        // This is not ideal, but it's the simplest way to handle this for now.
+        window.location.href = `/?${params.toString()}`;
+    }
   };
   
   return (
@@ -55,16 +61,24 @@ export default function Header() {
               </form>
             )}
 
-            <Button asChild variant="ghost" className={cn(isSearchOpen ? 'opacity-0' : 'opacity-100')}>
-              <Link href="/submit">
-                <PlusCircle className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">글쓰기</span>
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(!isSearchOpen)} className={cn(isSearchOpen ? 'opacity-0' : 'opacity-100')}>
-                <Search className="h-5 w-5" />
-                <span className="sr-only">검색</span>
-            </Button>
+            <div className={cn('flex items-center space-x-2 transition-opacity', isSearchOpen ? 'opacity-0' : 'opacity-100')}>
+                <Button asChild variant="ghost">
+                  <Link href="/keywords">
+                    <Tags className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">키워드</span>
+                  </Link>
+                </Button>
+                <Button asChild variant="ghost">
+                  <Link href="/submit">
+                    <PlusCircle className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">글쓰기</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
+                    <Search className="h-5 w-5" />
+                    <span className="sr-only">검색</span>
+                </Button>
+            </div>
         </div>
       </div>
     </header>
