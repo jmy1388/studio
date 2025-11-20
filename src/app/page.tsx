@@ -14,8 +14,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from '@/components/ui/carousel';
+import type { CarouselApi } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 
 const KEYWORDS = [
