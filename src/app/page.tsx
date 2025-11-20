@@ -18,27 +18,24 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 
+const KEYWORDS = [
+  '부모님 몰래', '급식 메뉴', '친구 관계', '부모님 관계', '게임',
+  '진로', '싫어요', '좋아요', '나의 비밀', '시험',
+  '공부', '학원 이야기', '틱톡', '인스타그램'
+];
+
 export default function Home() {
   const { firestore } = useFirebase();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [uniqueTags, setUniqueTags] = useState<string[]>([]);
 
   const articlesQuery = useMemoFirebase(
     () => (firestore ? query(collection(firestore, 'articles'), orderBy('likeCount', 'desc')) : null),
     [firestore]
   );
   const { data: allArticles, isLoading } = useCollection<Article>(articlesQuery);
-
-  useEffect(() => {
-    if (allArticles) {
-      const allTags = allArticles.flatMap(article => article.tags);
-      const uniqueTagSet = new Set(allTags);
-      setUniqueTags(Array.from(uniqueTagSet).sort());
-    }
-  }, [allArticles]);
 
   const articlesWithDate = useMemo(() => {
     return allArticles?.map(article => {
@@ -170,9 +167,9 @@ export default function Home() {
             <div className="flex justify-center items-center h-48">
               <Loader2 className="h-12 w-12 animate-spin text-primary" />
             </div>
-          ) : uniqueTags.length > 0 ? (
+          ) : KEYWORDS.length > 0 ? (
             <div className="grid grid-cols-5 gap-0 border-t border-l border-border">
-              {uniqueTags.slice(0, 15).map(tag => (
+              {KEYWORDS.map(tag => (
                 <Link
                   href={`/?q=${encodeURIComponent(tag)}`}
                   key={tag}
