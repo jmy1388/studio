@@ -171,7 +171,7 @@ export default function Home() {
             <div className="grid grid-cols-5 gap-0 border-t border-l border-border">
               {KEYWORDS.map(tag => (
                 <Link
-                  href={`/?q=${encodeURIComponent(tag)}`}
+                  href={`/keyword/${encodeURIComponent(tag)}`}
                   key={tag}
                   className="relative flex items-center justify-center h-24 p-4 border-b border-r border-border text-center text-foreground hover:bg-accent transition-colors"
                 >
