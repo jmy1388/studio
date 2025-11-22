@@ -1,9 +1,9 @@
+'use client';
+
 // src/app/articles/[slug]/page.tsx
 
 // ✅ [핵심] 빌드 시점에 미리 페이지를 만들지 않도록 강제합니다. (배포 오류 해결)
 export const dynamic = 'force-dynamic';
-
-'use client';
 
 import React, { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
