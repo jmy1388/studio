@@ -1,5 +1,5 @@
 // src/lib/firebase/config.ts (Vercel 환경 변수를 읽도록 수정됨)
-
+'use client';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
