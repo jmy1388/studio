@@ -24,7 +24,9 @@ const KEYWORDS = [
   '공부', '학원 이야기', '틱톡', '인스타그램', '수학'
 ];
 
-export default function Home() {
+import { Suspense } from 'react';
+
+function HomeContent() {
   const { articles: allArticles, loading: isLoading } = useHomeArticles();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
@@ -183,5 +185,13 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
