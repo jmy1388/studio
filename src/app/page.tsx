@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import ArticleCard from '@/components/article-card';
 import type { Article } from '@/lib/data';
-import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy, Timestamp } from 'firebase/firestore';
+import { useHomeArticles } from '@/hooks/useArticles';
+import { Timestamp } from 'firebase/firestore';
 import {
   Carousel,
   CarouselContent,
@@ -25,17 +25,11 @@ const KEYWORDS = [
 ];
 
 export default function Home() {
-  const { firestore } = useFirebase();
+  const { articles: allArticles, loading: isLoading } = useHomeArticles();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q');
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-
-  const articlesQuery = useMemoFirebase(
-    () => (firestore ? query(collection(firestore, 'articles'), orderBy('likeCount', 'desc')) : null),
-    [firestore]
-  );
-  const { data: allArticles, isLoading } = useCollection<Article>(articlesQuery);
 
   const articlesWithDate = useMemo(() => {
     return allArticles?.map(article => {
@@ -156,30 +150,30 @@ export default function Home() {
           </div>
         )}
       </div>
-      
+
       <div className="container max-w-5xl mx-auto py-8 md:py-12 px-4 sm:px-6 mt-8">
-          <header className="text-center mb-8 md:mb-12">
-            <h2 className="font-headline text-2xl sm:text-3xl tracking-[0.3em] font-light text-foreground mb-2">
-              KEYWORD
-            </h2>
-          </header>
-          {isLoading ? (
-            <div className="flex justify-center items-center h-48">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-          ) : KEYWORDS.length > 0 ? (
-            <div className="grid grid-cols-5 gap-0 border-t border-l border-border">
-              {KEYWORDS.map(tag => (
-                <Link
-                  href={`/keyword/${encodeURIComponent(tag)}`}
-                  key={tag}
-                  className="relative flex items-center justify-center h-24 p-4 border-b border-r border-border text-center text-foreground hover:bg-accent transition-colors"
-                >
-                  <span className="font-medium">{tag}</span>
-                </Link>
-              ))}
-            </div>
-          ) : null}
+        <header className="text-center mb-8 md:mb-12">
+          <h2 className="font-headline text-2xl sm:text-3xl tracking-[0.3em] font-light text-foreground mb-2">
+            KEYWORD
+          </h2>
+        </header>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-48">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </div>
+        ) : KEYWORDS.length > 0 ? (
+          <div className="grid grid-cols-5 gap-0 border-t border-l border-border">
+            {KEYWORDS.map(tag => (
+              <Link
+                href={`/keyword/${encodeURIComponent(tag)}`}
+                key={tag}
+                className="relative flex items-center justify-center h-24 p-4 border-b border-r border-border text-center text-foreground hover:bg-accent transition-colors"
+              >
+                <span className="font-medium">{tag}</span>
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </div>
 
 

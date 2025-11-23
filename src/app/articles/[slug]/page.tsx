@@ -5,72 +5,17 @@
 // ✅ [핵심] 빌드 시점에 미리 페이지를 만들지 않도록 강제합니다. (배포 오류 해결)
 export const dynamic = 'force-dynamic';
 
-import React, { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { useFirebase } from '@/firebase';
+import React from 'react';
+import { useArticleDetail } from '@/hooks/useArticles';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-
-// 게시글 데이터 타입 정의
-interface Article {
-  id: string;
-  title: string;
-  content: string;
-  summary: string;
-  authorUsername?: string;
-  createdAt?: any;
-  tags?: string[];
-}
 
 export default function ArticlePage() {
   // URL에서 글 ID(slug)를 가져옵니다.
   const params = useParams();
   const slug = params?.slug as string;
-  const { firestore } = useFirebase();
-
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      // DB 연결이 안되었거나 slug가 없으면 중단
-      if (!firestore || !slug) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Firestore의 'articles' 컬렉션에서 slug와 일치하는 문서 가져오기
-        // (참고: 문서 ID가 slug와 같다고 가정합니다. 만약 slug 필드를 따로 쓴다면 쿼리가 필요합니다)
-        // 현재 구조상 문서 ID = slug 일 확률이 높으므로 getDoc을 먼저 시도합니다.
-        const docRef = doc(firestore, 'articles', slug);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setArticle({ id: docSnap.id, ...docSnap.data() } as Article);
-        } else {
-          // 문서 ID로 못 찾으면 'slug' 필드로 쿼리 시도 (기존 코드 로직 반영)
-          const { collection, query, where, getDocs } = await import('firebase/firestore');
-          const q = query(collection(firestore, 'articles'), where('slug', '==', slug));
-          const querySnapshot = await getDocs(q);
-
-          if (!querySnapshot.empty) {
-            const docData = querySnapshot.docs[0];
-            setArticle({ id: docData.id, ...docData.data() } as Article);
-          } else {
-            console.log('No article found');
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching article:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArticle();
-  }, [slug]);
+  const { article, loading } = useArticleDetail(slug);
 
   // 로딩 중일 때 표시
   if (loading) {
