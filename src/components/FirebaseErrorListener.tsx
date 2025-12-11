@@ -15,8 +15,9 @@ export function FirebaseErrorListener() {
   useEffect(() => {
     // The callback now expects a strongly-typed error, matching the event payload.
     const handleError = (error: FirestorePermissionError) => {
-      // Set error in state to trigger a re-render.
-      setError(error);
+      // Instead of throwing and crashing the app, we'll just log it
+      console.error('Global permission error caught:', error);
+      // setError(error); // Disabled to prevent app crash
     };
 
     // The typed emitter will enforce that the callback for 'permission-error'
@@ -31,7 +32,7 @@ export function FirebaseErrorListener() {
 
   // On re-render, if an error exists in state, throw it.
   if (error) {
-    throw error;
+    // throw error; // Disabled
   }
 
   // This component renders nothing.
