@@ -82,3 +82,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 인페이지 검색 하이라이트 스타일 */
+.search-highlight {
+  background-color: rgba(255, 213, 79, 0.6);
+  padding: 2px 0;
+  border-radius: 2px;
+}
+
+.search-highlight-active {
+  background-color: rgba(255, 152, 0, 0.9);
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.4);
+}
+

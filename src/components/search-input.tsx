@@ -161,18 +161,6 @@ export default function SearchInput() {
 
   return (
     <>
-      {/* 하이라이트 스타일 - 전역 CSS로 추가 */}
-      <style jsx global>{`
-        .${HIGHLIGHT_CLASS} {
-          background-color: rgba(255, 213, 79, 0.5);
-          padding: 2px 0;
-          border-radius: 2px;
-        }
-        .${HIGHLIGHT_ACTIVE_CLASS} {
-          background-color: rgba(255, 152, 0, 0.8);
-          box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.4);
-        }
-      `}</style>
 
       {isSearchOpen ? (
         <div className="absolute left-0 w-full px-4 sm:px-6 flex items-center gap-2 animate-fade-in-up">
