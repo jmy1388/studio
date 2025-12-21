@@ -89,20 +89,25 @@ export default function ArticleCard({ article, index, className }: ArticleCardPr
                     </div>
                 </CardContent>
                 <CardFooter className="p-4 pt-0 flex justify-between items-center">
-                    <div className="flex flex-col">
-                        <span className="text-sm font-medium">{article.authorUsername || "익명"}</span>
-                        <span className="text-xs text-muted-foreground">
-                            {(() => {
-                                try {
-                                    if (article.createdAt && typeof (article.createdAt as any).seconds === 'number') {
-                                        return format(new Date((article.createdAt as any).seconds * 1000), 'yy.MM.dd', { locale: ko });
+                    <div className="flex items-center gap-2">
+                        <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-muted-foreground"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-medium">{article.authorUsername || "익명"}</span>
+                            <span className="text-xs text-muted-foreground">
+                                {(() => {
+                                    try {
+                                        if (article.createdAt && typeof (article.createdAt as any).seconds === 'number') {
+                                            return format(new Date((article.createdAt as any).seconds * 1000), 'yy.MM.dd', { locale: ko });
+                                        }
+                                        return format(new Date(article.createdAt as any), 'yy.MM.dd', { locale: ko });
+                                    } catch (e) {
+                                        return '';
                                     }
-                                    return format(new Date(article.createdAt as any), 'yy.MM.dd', { locale: ko });
-                                } catch (e) {
-                                    return '';
-                                }
-                            })()}
-                        </span>
+                                })()}
+                            </span>
+                        </div>
                     </div>
                     <LikeButton article={article} />
                 </CardFooter>
