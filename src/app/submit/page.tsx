@@ -9,6 +9,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useFirebase, addDocumentNonBlocking } from '@/firebase';
 import { collection, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { useUser } from '@/hooks/use-user';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,11 +39,34 @@ export default function SubmitPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { firestore } = useFirebase();
+  const { user, loading } = useUser();
 
   const form = useForm<z.infer<typeof articleSchema>>({
     resolver: zodResolver(articleSchema),
     defaultValues: { authorUsername: '', title: '', summary: '', content: '', tags: '' },
   });
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-[50vh]">로딩 중...</div>;
+  }
+
+  if (!user || user.isAnonymous) {
+    return (
+      <div className="container max-w-3xl mx-auto py-20 px-4 text-center">
+        <Card>
+          <CardHeader>
+            <CardTitle>로그인이 필요합니다</CardTitle>
+            <CardDescription>글을 작성하려면 로그인이 필요합니다.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild>
+              <Link href="/login">로그인 하기</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   async function onSubmit(values: z.infer<typeof articleSchema>) {
     if (!firestore) {

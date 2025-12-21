@@ -10,6 +10,8 @@ import { Heart, Loader2 } from 'lucide-react';
 import { useFirebase } from '@/firebase';
 import { doc, increment, onSnapshot, updateDoc } from 'firebase/firestore';
 import type { Article } from '@/lib/data';
+import { useUser } from '@/hooks/use-user';
+import { useToast } from '@/hooks/use-toast';
 
 // A non-blocking update function for the client
 const updateDocumentNonBlocking = (docRef: any, data: any) => {
@@ -20,6 +22,8 @@ const updateDocumentNonBlocking = (docRef: any, data: any) => {
 // The Client Component that handles all interaction and rendering
 export default function ArticlePageContent({ article: initialArticle }: { article: Article }) {
   const { firestore } = useFirebase();
+  const { user } = useUser();
+  const { toast } = useToast();
   const [article, setArticle] = useState(initialArticle);
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +67,16 @@ export default function ArticlePageContent({ article: initialArticle }: { articl
 
   const handleLikeClick = () => {
     if (!article || !firestore) return;
+
+    if (!user || user.isAnonymous) {
+      toast({
+        title: "로그인이 필요합니다",
+        description: "좋아요를 누르려면 로그인이 필요합니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const articleRef = doc(firestore, 'articles', article.id);
     const newLikedState = !isLiked;
 

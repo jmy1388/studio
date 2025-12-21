@@ -5,14 +5,15 @@ service cloud.firestore {
       // 1) 누구나 읽기 가능
       allow read: if true;
 
-      // 2) 작성: 익명 포함 "인증된" 사용자만, authorId = 본인 uid
-      allow create: if request.auth != null
+      // 2) 작성: 인증된(익명 제외) 사용자만, authorId = 본인 uid
+      allow create: if request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous'
         && request.resource.data.authorId == request.auth.uid;
 
-      // 3) 수정: 좋아요(likeCount)만 변경하는 경우 누구나 가능, 그 외는 작성자만 가능
+      // 3) 수정: 
       allow update: if 
-        // 좋아요만 변경하는 경우: 인증 없이도 허용
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']))
+        // 좋아요만 변경: 인증된(익명 제외) 사용자만 가능
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount']) 
+          && request.auth != null && request.auth.token.firebase.sign_in_provider != 'anonymous')
         // 그 외 필드 수정: 작성자만 가능
         || (request.auth != null && resource.data.authorId == request.auth.uid);
 
