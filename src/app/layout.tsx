@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   title: 'oob',
   description: '나의 글을 세상에 꺼내는 공간, oob',
   icons: [{ rel: "icon", url: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>" }],
+  openGraph: {
+    title: 'oob',
+    description: '나의 글을 세상에 꺼내는 공간, oob',
+    siteName: 'oob',
+    locale: 'ko_KR',
+    type: 'website',
+  },
   other: {
     'naver-site-verification': '843a4caa131c18439a515cbeebba3b66ba271ad7',
   },
