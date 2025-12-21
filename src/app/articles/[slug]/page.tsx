@@ -7,14 +7,16 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
 import { useArticleDetail } from '@/hooks/useArticles';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Heart } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useFirebase } from '@/firebase';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc, increment } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 export default function ArticlePage() {
   const params = useParams();
@@ -26,6 +28,8 @@ export default function ArticlePage() {
   const { firestore, auth } = useFirebase();
   const [user, setUser] = useState<User | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   useEffect(() => {
     if (auth) {
@@ -33,6 +37,37 @@ export default function ArticlePage() {
       return () => unsub();
     }
   }, [auth]);
+
+  useEffect(() => {
+    if (article) {
+      setLikeCount(article.likeCount);
+      const liked = localStorage.getItem(`liked_${article.id}`) === 'true';
+      setIsLiked(liked);
+    }
+  }, [article]);
+
+  const handleLike = () => {
+    if (!article || !firestore) return;
+
+    if (!user || user.isAnonymous) {
+      toast({
+        title: "로그인이 필요합니다",
+        description: "좋아요를 누르려면 로그인이 필요합니다.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const newLikedState = !isLiked;
+    setIsLiked(newLikedState);
+    setLikeCount(prev => newLikedState ? prev + 1 : prev - 1);
+    localStorage.setItem(`liked_${article.id}`, String(newLikedState));
+
+    const articleRef = doc(firestore, 'articles', article.id);
+    updateDoc(articleRef, {
+      likeCount: increment(newLikedState ? 1 : -1)
+    }).catch(err => console.error("Like update failed", err));
+  };
 
   const handleDelete = async () => {
     if (!article || !firestore || !user) return;
@@ -102,12 +137,34 @@ export default function ArticlePage() {
           )}
         </div>
 
-        {/* TEMPORARY DEBUG INFO */}
-        <div className="mt-2 p-2 bg-slate-100 text-xs text-slate-500 rounded font-mono">
-          <p>DEBUG INFO (나중에 지울 예정):</p>
-          <p>My UID: {user ? user.uid : 'Not logged in'}</p>
-          <p>Author ID: {article.authorId || 'None'}</p>
-          <p>Match?: {user && user.uid === article.authorId ? 'YES' : 'NO'}</p>
+        <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-muted-foreground"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-semibold text-foreground">{article.authorUsername || "익명"}</span>
+              <span className="text-xs text-muted-foreground">
+                {(() => {
+                  try {
+                    if (article.createdAt && typeof (article.createdAt as any).seconds === 'number') {
+                      return format(new Date((article.createdAt as any).seconds * 1000), 'yyyy.MM.dd', { locale: ko });
+                    }
+                    return format(new Date(article.createdAt as any), 'yyyy.MM.dd', { locale: ko });
+                  } catch (e) {
+                    return '';
+                  }
+                })()}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="rounded-full" onClick={handleLike}>
+              <Heart className={`h-6 w-6 transition-colors ${isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
+            </Button>
+            <span className="text-sm font-medium tabular-nums">{likeCount}</span>
+          </div>
         </div>
       </header>
 
